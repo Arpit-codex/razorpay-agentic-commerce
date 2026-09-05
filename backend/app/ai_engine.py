@@ -2,6 +2,7 @@
 Resilient AI Commerce Engine with Tavily Live Web Search + Gemini Intelligence.
 Combines store catalog recommendations with real-time web market intelligence
 for live Indian e-commerce pricing, product specs, and Razorpay checkout.
+Model: Google Gemini 3.6 Flash (models/gemini-3.6-flash)
 """
 
 import os
@@ -18,8 +19,8 @@ from .search_engine import search_real_products
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 
-# Prioritized Gemini model
-PRIMARY_MODEL = "models/gemini-2.5-flash"
+# Prioritized Gemini model (gemini-2.5-flash is deprecated — migrated to 3.6-flash)
+PRIMARY_MODEL = "models/gemini-3.6-flash"
 
 # In-memory session history
 _session_histories: Dict[str, List[Dict[str, Any]]] = {}

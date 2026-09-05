@@ -1,6 +1,6 @@
 """
 Main FastAPI Application Entry Point for Agentic Commerce Engine.
-Real AI-powered conversational chatbot using Google Gemini 2.5 Flash with function calling.
+Real AI-powered conversational chatbot using Google Gemini 3.6 Flash with function calling.
 """
 
 import os
@@ -141,7 +141,7 @@ class AgentNavigateRequest(BaseModel):
 @app.post("/api/v1/chat/message", summary="AI-Powered Conversational Commerce Chat")
 def ai_chat_endpoint(req: AIChatRequest):
     """
-    Real-time AI-powered chat using Google Gemini 2.5 Flash.
+    Real-time AI-powered chat using Google Gemini 3.6 Flash.
     User types any natural language requirement — AI understands, asks follow-up
     questions, searches catalog with function calling, and returns personalized
     recommendations with product cards and bundle deals.
