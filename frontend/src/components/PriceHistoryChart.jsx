@@ -31,12 +31,12 @@ export default function PriceHistoryChart({ brandModel, productName, currentPric
 
   if (loading) {
     return (
-      <div className="bg-slate-900/90 border border-slate-800 rounded-xl p-5 my-3 text-slate-300 animate-pulse">
+      <div className="bg-white border border-slate-300 rounded-xl p-5 my-3 text-slate-800 animate-pulse">
         <div className="flex items-center justify-between mb-3">
-          <div className="h-4 bg-slate-700 rounded w-1/3"></div>
-          <div className="h-4 bg-slate-700 rounded w-1/6"></div>
+          <div className="h-4 bg-slate-200 rounded w-1/3"></div>
+          <div className="h-4 bg-slate-200 rounded w-1/6"></div>
         </div>
-        <div className="h-32 bg-slate-800/60 rounded-lg flex items-center justify-center text-xs text-slate-500">
+        <div className="h-32 bg-slate-100 rounded-lg flex items-center justify-center text-xs text-slate-600 font-semibold">
           Loading market price history & Tavily CamelCamelCamel index...
         </div>
       </div>
@@ -45,9 +45,9 @@ export default function PriceHistoryChart({ brandModel, productName, currentPric
 
   if (error || !data) {
     return (
-      <div className="bg-slate-900/90 border border-slate-800 rounded-xl p-4 my-3 text-red-400 text-xs flex justify-between items-center">
+      <div className="bg-white border border-rose-300 rounded-xl p-4 my-3 text-rose-800 text-xs flex justify-between items-center font-bold">
         <span>Failed to fetch price history: {error}</span>
-        <button onClick={onClose} className="text-slate-400 hover:text-white text-xs">Close</button>
+        <button onClick={onClose} className="text-slate-600 hover:text-slate-900 text-xs">Close</button>
       </div>
     );
   }
@@ -71,27 +71,27 @@ export default function PriceHistoryChart({ brandModel, productName, currentPric
   }).join(' ');
 
   return (
-    <div className="bg-slate-900 border border-emerald-500/30 rounded-2xl p-5 my-4 text-white shadow-2xl space-y-4">
+    <div className="bg-white border border-slate-300 rounded-2xl p-5 my-4 text-slate-900 shadow-lg space-y-4">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+      <div className="flex items-center justify-between border-b border-slate-200 pb-3">
         <div className="flex items-center gap-2">
           <span className="text-xl">📈</span>
           <div>
-            <h4 className="font-semibold text-sm text-slate-100">{brandModel || productName}</h4>
-            <p className="text-[11px] text-slate-400">Price Journey & Tavily CamelCamelCamel Market Analytics</p>
+            <h4 className="font-bold text-sm text-slate-900">{brandModel || productName}</h4>
+            <p className="text-[11px] text-slate-600 font-medium">Price Journey & Tavily CamelCamelCamel Market Analytics</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
           <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-            stats.trend === 'DECLINING' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40' :
-            stats.trend === 'RISING' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/40' :
-            'bg-blue-500/20 text-blue-400 border border-blue-500/40'
+            stats.trend === 'DECLINING' ? 'bg-emerald-100 text-emerald-900 border border-emerald-300' :
+            stats.trend === 'RISING' ? 'bg-rose-100 text-rose-900 border border-rose-300' :
+            'bg-blue-100 text-blue-900 border border-blue-300'
           }`}>
             {stats.trend === 'DECLINING' ? '📉 TREND: DECLINING' : stats.trend === 'RISING' ? '📈 TREND: RISING' : '➡️ TREND: STABLE'}
           </span>
           <button 
             onClick={onClose} 
-            className="text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 w-6 h-6 rounded-full flex items-center justify-center text-xs transition"
+            className="text-slate-500 hover:text-slate-900 bg-slate-100 w-6 h-6 rounded-full flex items-center justify-center text-xs transition font-bold"
           >
             ✕
           </button>
@@ -100,27 +100,27 @@ export default function PriceHistoryChart({ brandModel, productName, currentPric
 
       {/* Metric Cards Row */}
       <div className="grid grid-cols-4 gap-2 text-center">
-        <div className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-2.5">
-          <p className="text-[10px] text-slate-400 uppercase font-semibold">Current</p>
-          <p className="text-sm font-bold text-emerald-400">₹{stats.current_price?.toLocaleString('en-IN')}</p>
+        <div className="bg-slate-50 border border-slate-300 rounded-xl p-2.5">
+          <p className="text-[10px] text-slate-600 uppercase font-bold">Current</p>
+          <p className="text-sm font-bold text-emerald-800">₹{stats.current_price?.toLocaleString('en-IN')}</p>
         </div>
-        <div className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-2.5">
-          <p className="text-[10px] text-slate-400 uppercase font-semibold">30-Day Avg</p>
-          <p className="text-sm font-bold text-slate-200">₹{stats.avg_price?.toLocaleString('en-IN')}</p>
+        <div className="bg-slate-50 border border-slate-300 rounded-xl p-2.5">
+          <p className="text-[10px] text-slate-600 uppercase font-bold">30-Day Avg</p>
+          <p className="text-sm font-bold text-slate-900">₹{stats.avg_price?.toLocaleString('en-IN')}</p>
         </div>
-        <div className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-2.5">
-          <p className="text-[10px] text-slate-400 uppercase font-semibold">Lowest Seen</p>
-          <p className="text-sm font-bold text-emerald-300">₹{stats.lowest_price?.toLocaleString('en-IN')}</p>
+        <div className="bg-slate-50 border border-slate-300 rounded-xl p-2.5">
+          <p className="text-[10px] text-slate-600 uppercase font-bold">Lowest Seen</p>
+          <p className="text-sm font-bold text-emerald-700">₹{stats.lowest_price?.toLocaleString('en-IN')}</p>
         </div>
-        <div className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-2.5">
-          <p className="text-[10px] text-slate-400 uppercase font-semibold">Highest Seen</p>
-          <p className="text-sm font-bold text-rose-400">₹{stats.highest_price?.toLocaleString('en-IN')}</p>
+        <div className="bg-slate-50 border border-slate-300 rounded-xl p-2.5">
+          <p className="text-[10px] text-slate-600 uppercase font-bold">Highest Seen</p>
+          <p className="text-sm font-bold text-rose-800">₹{stats.highest_price?.toLocaleString('en-IN')}</p>
         </div>
       </div>
 
       {/* SVG Sparkline Chart */}
-      <div className="bg-slate-950/90 border border-slate-800/80 rounded-xl p-3 relative overflow-hidden">
-        <div className="flex justify-between items-center text-[10px] text-slate-400 mb-1 px-1">
+      <div className="bg-slate-50 border border-slate-300 rounded-xl p-3 relative overflow-hidden">
+        <div className="flex justify-between items-center text-[10px] text-slate-600 font-semibold mb-1 px-1">
           <span>30 Days Ago</span>
           <span>Price Timeline (INR)</span>
           <span>Today</span>
@@ -129,8 +129,8 @@ export default function PriceHistoryChart({ brandModel, productName, currentPric
           {/* Gradient background under line */}
           <defs>
             <linearGradient id="priceGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#10b981" stopOpacity="0.4" />
-              <stop offset="100%" stopColor="#10b981" stopOpacity="0.0" />
+              <stop offset="0%" stopColor="#059669" stopOpacity="0.25" />
+              <stop offset="100%" stopColor="#059669" stopOpacity="0.0" />
             </linearGradient>
           </defs>
           
@@ -141,14 +141,14 @@ export default function PriceHistoryChart({ brandModel, productName, currentPric
           />
 
           {/* Grid lines */}
-          <line x1={padding} y1={padding} x2={svgWidth - padding} y2={padding} stroke="#334155" strokeDasharray="3 3" opacity="0.4" />
-          <line x1={padding} y1={svgHeight / 2} x2={svgWidth - padding} y2={svgHeight / 2} stroke="#334155" strokeDasharray="3 3" opacity="0.4" />
-          <line x1={padding} y1={svgHeight - padding} x2={svgWidth - padding} y2={svgHeight - padding} stroke="#334155" strokeDasharray="3 3" opacity="0.4" />
+          <line x1={padding} y1={padding} x2={svgWidth - padding} y2={padding} stroke="#cbd5e1" strokeDasharray="3 3" />
+          <line x1={padding} y1={svgHeight / 2} x2={svgWidth - padding} y2={svgHeight / 2} stroke="#cbd5e1" strokeDasharray="3 3" />
+          <line x1={padding} y1={svgHeight - padding} x2={svgWidth - padding} y2={svgHeight - padding} stroke="#cbd5e1" strokeDasharray="3 3" />
 
           {/* Trend line */}
           <polyline
             fill="none"
-            stroke="#10b981"
+            stroke="#059669"
             strokeWidth="3"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -165,7 +165,7 @@ export default function PriceHistoryChart({ brandModel, productName, currentPric
                 cx={x}
                 cy={y}
                 r="4"
-                className="fill-slate-900 stroke-emerald-400 stroke-2 hover:r-6 transition-all cursor-pointer"
+                className="fill-white stroke-emerald-700 stroke-2 hover:r-6 transition-all cursor-pointer"
               >
                 <title>{`${s.source_store}: ₹${s.price_inr?.toLocaleString('en-IN')} (${new Date(s.timestamp).toLocaleDateString()})`}</title>
               </circle>
@@ -175,18 +175,18 @@ export default function PriceHistoryChart({ brandModel, productName, currentPric
       </div>
 
       {/* AI Prediction & Camel Insights Card */}
-      <div className="bg-emerald-950/20 border border-emerald-500/30 rounded-xl p-3.5 flex items-start gap-3 text-xs">
+      <div className="bg-emerald-50 border border-emerald-300 rounded-xl p-3.5 flex items-start gap-3 text-xs">
         <span className="text-xl mt-0.5">🎯</span>
-        <div className="space-y-1 text-slate-300">
+        <div className="space-y-1 text-slate-800 font-medium">
           <div className="flex items-center gap-2">
-            <span className="font-semibold text-emerald-400">AI Price Prediction:</span>
-            <span className="bg-emerald-500/20 text-emerald-300 text-[10px] px-2 py-0.5 rounded font-medium">
+            <span className="font-bold text-emerald-900">AI Price Prediction:</span>
+            <span className="bg-emerald-100 text-emerald-900 border border-emerald-300 text-[10px] px-2 py-0.5 rounded font-bold">
               Expected Low ₹{prediction.expected_low?.toLocaleString('en-IN')} ({prediction.confidence} CONFIDENCE)
             </span>
           </div>
-          <p className="text-[11px] text-slate-300 leading-relaxed">{prediction.reasoning}</p>
+          <p className="text-[11px] text-slate-700 leading-relaxed font-medium">{prediction.reasoning}</p>
           {camel_data.summary && (
-            <p className="text-[10px] text-slate-400 italic pt-1 border-t border-slate-800/60 mt-1">
+            <p className="text-[10px] text-slate-600 italic pt-1 border-t border-emerald-200 mt-1">
               🌐 {camel_data.summary}
             </p>
           )}

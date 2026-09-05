@@ -59,36 +59,36 @@ export default function PriceWatchPanel({ sessionId }) {
 
   if (loading) {
     return (
-      <div className="p-4 text-slate-400 text-xs animate-pulse">
+      <div className="p-4 text-slate-600 text-xs font-semibold animate-pulse">
         Loading active Price Watch agent state...
       </div>
     );
   }
 
   return (
-    <div className="space-y-4 p-4 text-white">
+    <div className="space-y-4 p-4 text-slate-900 bg-white">
       {/* Panel Top Bar */}
-      <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+      <div className="flex items-center justify-between border-b border-slate-200 pb-3">
         <div>
-          <h3 className="font-bold text-sm text-slate-100 flex items-center gap-2">
+          <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
             <span>🔔</span> Active AI Price Watches ({watches.length})
           </h3>
-          <p className="text-[11px] text-slate-400">Autonomous holds, deadline tracking & auto-buy</p>
+          <p className="text-[11px] text-slate-600 font-medium">Autonomous holds, deadline tracking & auto-buy</p>
         </div>
         <button 
           onClick={fetchWatches}
-          className="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700 transition"
+          className="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold px-2.5 py-1 rounded-lg border border-slate-300 transition"
         >
           🔄 Refresh
         </button>
       </div>
 
       {watches.length === 0 ? (
-        <div className="bg-slate-900/60 border border-slate-800/80 rounded-xl p-6 text-center text-slate-400 space-y-2">
+        <div className="bg-slate-50 border border-slate-300 rounded-xl p-6 text-center text-slate-600 space-y-2">
           <span className="text-3xl block">🏷️</span>
-          <p className="font-semibold text-xs text-slate-300">No active price watches</p>
-          <p className="text-[11px] text-slate-500 max-w-xs mx-auto">
-            Search for any product in chat or Direct Buy, then click <strong className="text-emerald-400">"🔔 Set Price Alert"</strong> to hold at your target price.
+          <p className="font-bold text-xs text-slate-900">No active price watches</p>
+          <p className="text-[11px] text-slate-600 max-w-xs mx-auto font-medium">
+            Search for any product in chat or Direct Buy, then click <strong className="text-emerald-700">"🔔 Set Price Alert"</strong> to hold at your target price.
           </p>
         </div>
       ) : (
@@ -107,63 +107,63 @@ export default function PriceWatchPanel({ sessionId }) {
             return (
               <div 
                 key={w.id} 
-                className={`bg-slate-900 border rounded-xl p-4 space-y-3 transition ${
-                  isBought ? 'border-emerald-500/50 bg-emerald-950/10' :
-                  isGaveUp ? 'border-slate-800 bg-slate-950/40 opacity-75' :
-                  isCancelled ? 'border-slate-800 bg-slate-950/30 opacity-60' :
-                  'border-slate-800 hover:border-emerald-500/30'
+                className={`bg-white border rounded-xl p-4 space-y-3 transition shadow-sm ${
+                  isBought ? 'border-emerald-500 bg-emerald-50' :
+                  isGaveUp ? 'border-slate-300 bg-slate-50 opacity-75' :
+                  isCancelled ? 'border-slate-300 bg-slate-50 opacity-60' :
+                  'border-slate-300 hover:border-emerald-600'
                 }`}
               >
                 {/* Watch Card Header */}
                 <div className="flex items-start justify-between">
                   <div>
-                    <h4 className="font-semibold text-xs text-slate-200">{w.product_name || w.brand_model}</h4>
-                    <p className="text-[10px] text-slate-400 font-mono mt-0.5">ID: {w.id}</p>
+                    <h4 className="font-bold text-xs text-slate-900">{w.product_name || w.brand_model}</h4>
+                    <p className="text-[10px] text-slate-500 font-mono mt-0.5 font-semibold">ID: {w.id}</p>
                   </div>
                   <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${
-                    isBought ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' :
-                    isGaveUp ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' :
-                    isCancelled ? 'bg-slate-800 text-slate-400 border-slate-700' :
-                    'bg-blue-500/20 text-blue-300 border-blue-500/40'
+                    isBought ? 'bg-emerald-100 text-emerald-900 border-emerald-300' :
+                    isGaveUp ? 'bg-amber-100 text-amber-900 border-amber-300' :
+                    isCancelled ? 'bg-slate-100 text-slate-700 border-slate-300' :
+                    'bg-blue-100 text-blue-900 border-blue-300'
                   }`}>
                     {w.status}
                   </span>
                 </div>
 
                 {/* Price Matrix */}
-                <div className="grid grid-cols-3 gap-2 bg-slate-950/60 p-2.5 rounded-lg text-center border border-slate-800/60">
+                <div className="grid grid-cols-3 gap-2 bg-slate-50 p-2.5 rounded-lg text-center border border-slate-200">
                   <div>
-                    <p className="text-[9px] text-slate-400 uppercase font-medium">Target Price</p>
-                    <p className="text-xs font-bold text-emerald-400">₹{w.target_price_inr?.toLocaleString('en-IN')}</p>
+                    <p className="text-[9px] text-slate-600 uppercase font-bold">Target Price</p>
+                    <p className="text-xs font-bold text-emerald-700">₹{w.target_price_inr?.toLocaleString('en-IN')}</p>
                   </div>
                   <div>
-                    <p className="text-[9px] text-slate-400 uppercase font-medium">Current Price</p>
-                    <p className="text-xs font-bold text-slate-200">₹{w.current_price_inr?.toLocaleString('en-IN')}</p>
+                    <p className="text-[9px] text-slate-600 uppercase font-bold">Current Price</p>
+                    <p className="text-xs font-bold text-slate-900">₹{w.current_price_inr?.toLocaleString('en-IN')}</p>
                   </div>
                   <div>
-                    <p className="text-[9px] text-slate-400 uppercase font-medium">Lowest Seen</p>
-                    <p className="text-xs font-bold text-emerald-300">₹{w.lowest_seen_inr?.toLocaleString('en-IN')}</p>
+                    <p className="text-[9px] text-slate-600 uppercase font-bold">Lowest Seen</p>
+                    <p className="text-xs font-bold text-emerald-800">₹{w.lowest_seen_inr?.toLocaleString('en-IN')}</p>
                   </div>
                 </div>
 
                 {/* Target Progress Bar */}
                 <div className="space-y-1">
-                  <div className="flex justify-between text-[10px] text-slate-400">
+                  <div className="flex justify-between text-[10px] text-slate-600 font-semibold">
                     <span>Target Progress</span>
                     <span>{progressPct}% of target</span>
                   </div>
-                  <div className="w-full bg-slate-950 h-2 rounded-full overflow-hidden border border-slate-800">
+                  <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden border border-slate-300">
                     <div 
-                      className={`h-full transition-all duration-500 ${isBought ? 'bg-emerald-400' : 'bg-gradient-to-r from-teal-500 to-emerald-400'}`}
+                      className={`h-full transition-all duration-500 ${isBought ? 'bg-emerald-600' : 'bg-emerald-600'}`}
                       style={{ width: `${progressPct}%` }}
                     />
                   </div>
                 </div>
 
                 {/* Meta details: Deadline & Action */}
-                <div className="flex items-center justify-between text-[10px] text-slate-400 pt-1 border-t border-slate-800/60">
+                <div className="flex items-center justify-between text-[10px] text-slate-600 pt-1 border-t border-slate-200 font-medium">
                   <span>⏱️ Deadline: {w.deadline_hours}h ({new Date(w.deadline_at).toLocaleDateString()})</span>
-                  <span>Fallback: <strong className="text-slate-300">{w.action_on_expire}</strong></span>
+                  <span>Fallback: <strong className="text-slate-900">{w.action_on_expire}</strong></span>
                 </div>
 
                 {/* Actions */}
@@ -172,13 +172,13 @@ export default function PriceWatchPanel({ sessionId }) {
                     <button
                       onClick={() => handleManualCheck(w.id)}
                       disabled={checkingId === w.id}
-                      className="flex-1 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 text-[11px] font-semibold py-1.5 px-3 rounded-lg transition flex items-center justify-center gap-1"
+                      className="flex-1 bg-emerald-700 hover:bg-emerald-800 text-white text-[11px] font-bold py-1.5 px-3 rounded-lg transition flex items-center justify-center gap-1 shadow-sm"
                     >
                       {checkingId === w.id ? 'Polling Market...' : '⚡ Check Price Now'}
                     </button>
                     <button
                       onClick={() => handleCancelWatch(w.id)}
-                      className="bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white text-[11px] py-1.5 px-3 rounded-lg border border-slate-700 transition"
+                      className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-[11px] py-1.5 px-3 rounded-lg border border-slate-300 transition"
                     >
                       Cancel
                     </button>
@@ -186,7 +186,7 @@ export default function PriceWatchPanel({ sessionId }) {
                 )}
 
                 {w.razorpay_order_id && (
-                  <div className="text-[10px] bg-emerald-950/40 border border-emerald-500/30 p-2 rounded-lg text-emerald-300 font-mono">
+                  <div className="text-[10px] bg-emerald-50 border border-emerald-300 p-2 rounded-lg text-emerald-900 font-mono font-bold">
                     ✅ Razorpay Order ID: {w.razorpay_order_id}
                   </div>
                 )}

@@ -1,36 +1,40 @@
 @charset "UTF-8";
 
 /* ==========================================================================
-   RAZORPAY AGENTIC COMMERCE ENGINE - LUXURY DESIGN SYSTEM & UTILITY ENGINE
-   Dark Glassmorphism · Electric Blue & Emerald Accents · High-Performance CSS
+   RAZORPAY AGENTIC COMMERCE ENGINE - CLASSIC INSTITUTIONAL LEDGER SYSTEM
+   Professional White Theme · High-Contrast Typography · Financial Precision
    ========================================================================== */
 
 :root {
   --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  --bg-primary: #060910;
-  --bg-surface: #0b1120;
-  --bg-surface-elevated: #111a2e;
-  --bg-card: rgba(15, 23, 42, 0.7);
-  --bg-glass: rgba(11, 17, 32, 0.85);
+  /* Institutional Light Canvas Palette */
+  --bg-primary: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #f1f5f9;
+  --bg-card: #ffffff;
+  --bg-glass: #ffffff;
 
-  --border-subtle: rgba(255, 255, 255, 0.07);
-  --border-active: rgba(59, 130, 246, 0.4);
-  --border-emerald: rgba(16, 185, 129, 0.4);
+  /* Crisp Ledger Borders */
+  --border-subtle: #cbd5e1;
+  --border-active: #1d4ed8;
+  --border-emerald: #059669;
 
-  --blue-primary: #2563eb;
-  --blue-accent: #3b82f6;
-  --cyan-accent: #06b6d4;
-  --emerald-accent: #10b981;
-  --amber-accent: #f59e0b;
-  --rose-accent: #f43f5e;
-  --purple-accent: #8b5cf6;
+  /* High-Contrast Accents */
+  --blue-primary: #1d4ed8;
+  --blue-accent: #2563eb;
+  --cyan-accent: #0284c7;
+  --emerald-accent: #059669;
+  --amber-accent: #d97706;
+  --rose-accent: #dc2626;
+  --purple-accent: #6d28d9;
 
-  --text-main: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --text-dark: #334155;
+  /* High-Contrast Typography Tokens (WCAG AAA Compliant) */
+  --text-main: #0f172a;       /* Deep Slate / Charcoal Ink - 16:1 Contrast Ratio */
+  --text-secondary: #334155;  /* Dark Slate - 10:1 Contrast Ratio */
+  --text-muted: #475569;      /* Medium Dark Grey - 7:1 Contrast Ratio */
+  --text-dark: #0f172a;
 }
 
 *, *::before, *::after {
@@ -51,20 +55,20 @@ html, body, #root {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Custom Scrollbars */
+/* Custom Classic Scrollbars */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(6, 9, 16, 0.6);
+  background: #f1f5f9;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.2);
+  background: #94a3b8;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(59, 130, 246, 0.6);
+  background: #1d4ed8;
 }
 
 /* Typography Helpers */
@@ -75,7 +79,6 @@ textarea::placeholder, input::placeholder {
   color: #64748b;
   opacity: 1;
 }
-
 
 /* Flexbox Engine */
 .flex { display: flex; }
@@ -171,62 +174,66 @@ textarea::placeholder, input::placeholder {
 .space-y-3 > * + * { margin-top: 0.75rem; }
 .space-y-4 > * + * { margin-top: 1rem; }
 
-/* Rounded Borders */
+/* Rounded Borders - Classic Crisp Radius */
 .rounded { border-radius: 0.25rem; }
 .rounded-md { border-radius: 0.375rem; }
 .rounded-lg { border-radius: 0.5rem; }
-.rounded-xl { border-radius: 0.75rem; }
-.rounded-2xl { border-radius: 1rem; }
+.rounded-xl { border-radius: 0.625rem; }
+.rounded-2xl { border-radius: 0.75rem; }
 .rounded-full { border-radius: 9999px; }
 
-/* Borders */
+/* Borders - Ledger Line Definitions */
 .border { border: 1px solid var(--border-subtle); }
 .border-b { border-bottom: 1px solid var(--border-subtle); }
 .border-t { border-top: 1px solid var(--border-subtle); }
 .border-l { border-left: 1px solid var(--border-subtle); }
 .border-r { border-right: 1px solid var(--border-subtle); }
-.border-white\/10 { border-color: rgba(255, 255, 255, 0.1); }
-.border-white\/20 { border-color: rgba(255, 255, 255, 0.2); }
-.border-blue-500\/30 { border-color: rgba(59, 130, 246, 0.3); }
-.border-emerald-500\/30 { border-color: rgba(16, 185, 129, 0.3); }
-.border-rose-500\/30 { border-color: rgba(244, 63, 94, 0.3); }
+.border-white\/10 { border-color: #cbd5e1; }
+.border-white\/20 { border-color: #94a3b8; }
+.border-slate-700 { border-color: #cbd5e1; }
+.border-slate-800 { border-color: #e2e8f0; }
+.border-blue-500\/30 { border-color: #93c5fd; }
+.border-emerald-500\/30 { border-color: #a7f3d0; }
+.border-rose-500\/30 { border-color: #fecdd3; }
 
-/* Backgrounds */
-.bg-slate-950 { background-color: #020617; }
-.bg-slate-950\/80 { background-color: rgba(2, 6, 23, 0.85); }
-.bg-slate-900 { background-color: #0f172a; }
-.bg-slate-900\/60 { background-color: rgba(15, 23, 42, 0.6); }
-.bg-slate-800 { background-color: #1e293b; }
-.bg-slate-800\/80 { background-color: rgba(30, 41, 59, 0.8); }
-.bg-slate-800\/60 { background-color: rgba(30, 41, 59, 0.6); }
-.bg-blue-600 { background-color: #2563eb; }
-.bg-blue-500\/20 { background-color: rgba(59, 130, 246, 0.2); }
-.bg-purple-600 { background-color: #7c3aed; }
-.bg-purple-500\/20 { background-color: rgba(139, 92, 246, 0.2); }
-.bg-rose-600 { background-color: #e11d48; }
-.bg-rose-500\/20 { background-color: rgba(244, 63, 94, 0.2); }
-.bg-emerald-400 { background-color: #34d399; }
-.bg-emerald-600 { background-color: #059669; }
-.bg-emerald-500\/20 { background-color: rgba(16, 185, 129, 0.2); }
+/* Background Overrides for High Contrast Light Theme */
+.bg-slate-950 { background-color: #ffffff; }
+.bg-slate-950\/80 { background-color: rgba(255, 255, 255, 0.95); }
+.bg-slate-950\/70 { background-color: #f8fafc; }
+.bg-slate-900 { background-color: #ffffff; }
+.bg-slate-900\/60 { background-color: #f8fafc; }
+.bg-slate-800 { background-color: #f1f5f9; }
+.bg-slate-800\/80 { background-color: #f1f5f9; }
+.bg-slate-800\/60 { background-color: #f8fafc; }
+
+.bg-blue-600 { background-color: #1d4ed8; }
+.bg-blue-500\/20 { background-color: #eff6ff; }
+.bg-purple-600 { background-color: #6d28d9; }
+.bg-purple-500\/20 { background-color: #f5f3ff; }
+.bg-rose-600 { background-color: #dc2626; }
+.bg-rose-500\/20 { background-color: #fef2f2; }
+.bg-emerald-400 { background-color: #059669; }
+.bg-emerald-600 { background-color: #047857; }
+.bg-emerald-500\/20 { background-color: #ecfdf5; }
 .bg-amber-600 { background-color: #d97706; }
-.bg-amber-500\/20 { background-color: rgba(245, 158, 11, 0.2); }
-.bg-white\/5 { background-color: rgba(255, 255, 255, 0.05); }
-.bg-white\/10 { background-color: rgba(255, 255, 255, 0.1); }
+.bg-amber-500\/20 { background-color: #fffbeb; }
+.bg-white\/5 { background-color: #f8fafc; }
+.bg-white\/10 { background-color: #f1f5f9; }
 
-/* Text Colors */
-.text-white { color: #ffffff; }
-.text-slate-100 { color: #f1f5f9; }
-.text-slate-200 { color: #e2e8f0; }
-.text-slate-300 { color: #cbd5e1; }
-.text-slate-400 { color: #94a3b8; }
+/* High-Contrast Text Color Classes */
+.text-white { color: #0f172a; }
+.text-slate-100 { color: #0f172a; }
+.text-slate-200 { color: #1e293b; }
+.text-slate-300 { color: #334155; }
+.text-slate-400 { color: #475569; }
 .text-slate-500 { color: #64748b; }
-.text-blue-300 { color: #93c5fd; }
-.text-blue-400 { color: #60a5fa; }
-.text-cyan-300 { color: #67e8f9; }
-.text-emerald-400 { color: #34d399; }
-.text-amber-400 { color: #fbbf24; }
-.text-rose-400 { color: #fb7185; }
-.text-rose-500 { color: #f43f5e; }
+.text-blue-300 { color: #1e40af; }
+.text-blue-400 { color: #1d4ed8; }
+.text-cyan-300 { color: #0369a1; }
+.text-emerald-400 { color: #047857; }
+.text-amber-400 { color: #b45309; }
+.text-rose-400 { color: #be123c; }
+.text-rose-500 { color: #dc2626; }
 
 /* Font Sizes */
 .text-\[10px\] { font-size: 10px; }
@@ -253,7 +260,7 @@ textarea::placeholder, input::placeholder {
 .overflow-hidden { overflow: hidden; }
 .overflow-y-auto { overflow-y: auto; }
 .cursor-pointer { cursor: pointer; }
-.backdrop-blur-md { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.backdrop-blur-md { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
 
 /* Animations & Transitions */
 .transition-all { transition: all 0.2s ease; }
@@ -267,7 +274,7 @@ textarea::placeholder, input::placeholder {
 
 @keyframes pulse {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+  50% { opacity: 0.5; }
 }
 .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
 
@@ -292,25 +299,25 @@ textarea::placeholder, input::placeholder {
   .lg\:flex { display: flex !important; }
 }
 
-/* Glass Panels & Custom Cards */
+/* Institutional Cards & Ledger Panels */
 .glass-panel {
-  background: var(--bg-glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: #ffffff;
   border: 1px solid var(--border-subtle);
-  border-radius: 12px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .metric-card {
-  background: rgba(30, 41, 59, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
   padding: 10px 14px;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 .metric-card:hover {
-  border-color: rgba(59, 130, 246, 0.3);
-  background: rgba(30, 41, 59, 0.85);
+  border-color: #1d4ed8;
+  box-shadow: 0 2px 6px rgba(29, 78, 216, 0.1);
 }
 
 .glow-pill {
@@ -320,35 +327,39 @@ textarea::placeholder, input::placeholder {
   padding: 4px 10px;
   border-radius: 9999px;
   font-size: 11px;
-  font-weight: 600;
-  background: rgba(16, 185, 129, 0.12);
-  color: #34d399;
-  border: 1px solid rgba(16, 185, 129, 0.25);
+  font-weight: 700;
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
 }
 
-/* Badge Styles */
+/* Classic Badge System */
 .badge-agent {
-  background: rgba(139, 92, 246, 0.2);
-  color: #c4b5fd;
-  border: 1px solid rgba(139, 92, 246, 0.4);
+  background: #f5f3ff;
+  color: #5b21b6;
+  border: 1px solid #ddd6fe;
+  font-weight: 700;
 }
 
 .badge-human {
-  background: rgba(59, 130, 246, 0.2);
-  color: #93c5fd;
-  border: 1px solid rgba(59, 130, 246, 0.4);
+  background: #eff6ff;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+  font-weight: 700;
 }
 
 .badge-passed {
-  background: rgba(16, 185, 129, 0.2);
-  color: #6ee7b7;
-  border: 1px solid rgba(16, 185, 129, 0.4);
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+  font-weight: 700;
 }
 
 .badge-failed {
-  background: rgba(244, 63, 94, 0.2);
-  color: #fda4af;
-  border: 1px solid rgba(244, 63, 94, 0.4);
+  background: #dc2626;
+  color: #ffffff;
+  border: 1px solid #b91c1c;
+  font-weight: 800;
 }
 
 /* Line clamp */
@@ -359,9 +370,9 @@ textarea::placeholder, input::placeholder {
   overflow: hidden;
 }
 
-/* Code block highlight */
+/* High-Contrast Code blocks */
 pre code, pre {
   font-family: var(--font-mono);
   font-size: 11px;
+  color: #0f172a;
 }
-

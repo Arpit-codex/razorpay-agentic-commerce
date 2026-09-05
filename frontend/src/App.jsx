@@ -41,17 +41,17 @@ export default function App() {
       flexDirection: 'column',
       height: '100vh',
       width: '100vw',
-      backgroundColor: '#060910',
-      color: '#f8fafc',
+      backgroundColor: '#f8fafc',
+      color: '#0f172a',
       overflow: 'hidden',
       fontFamily: 'Plus Jakarta Sans, system-ui, sans-serif'
     }}>
       {/* Top Global Navigation Bar */}
       <header style={{
         height: '56px',
-        borderBottom: '1px solid rgba(255,255,255,0.08)',
-        backgroundColor: 'rgba(8,12,22,0.92)',
-        backdropFilter: 'blur(16px)',
+        borderBottom: '1px solid #cbd5e1',
+        backgroundColor: '#ffffff',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
         padding: '0 16px',
         display: 'flex',
         alignItems: 'center',
@@ -61,28 +61,28 @@ export default function App() {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div style={{
-            width: '32px', height: '32px', borderRadius: '8px',
-            background: 'linear-gradient(135deg, #2563eb, #06b6d4)',
+            width: '32px', height: '32px', borderRadius: '6px',
+            background: '#1d4ed8',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 4px 12px rgba(37,99,235,0.35)'
+            boxShadow: '0 2px 6px rgba(29,78,216,0.25)'
           }}>
             <Zap size={18} color="white" />
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ fontWeight: 800, fontSize: '13px', letterSpacing: '-0.02em', color: '#ffffff' }}>
+              <span style={{ fontWeight: 800, fontSize: '13px', letterSpacing: '-0.02em', color: '#0f172a' }}>
                 RAZORPAY BUILDATHON
               </span>
               <span style={{
                 fontSize: '10px', fontFamily: 'JetBrains Mono, monospace',
                 padding: '2px 8px', borderRadius: '4px',
-                backgroundColor: 'rgba(37,99,235,0.18)', color: '#93c5fd',
-                border: '1px solid rgba(37,99,235,0.35)', fontWeight: 600
+                backgroundColor: '#eff6ff', color: '#1e40af',
+                border: '1px solid #bfdbfe', fontWeight: 700
               }}>
                 TRACK 01: AGENTIC COMMERCE
               </span>
             </div>
-            <p style={{ fontSize: '11px', color: '#64748b' }}>
+            <p style={{ fontSize: '11px', color: '#475569', fontWeight: 500 }}>
               Dual-Capability Engine · Human Adaptive Chatbot & External AI Agent Protocol
             </p>
           </div>
@@ -93,18 +93,18 @@ export default function App() {
           {/* Mobile Tab Switcher */}
           <div style={{
             display: 'flex',
-            backgroundColor: 'rgba(30,41,59,0.7)',
+            backgroundColor: '#f1f5f9',
             padding: '2px',
-            borderRadius: '8px',
-            border: '1px solid rgba(255,255,255,0.08)'
+            borderRadius: '6px',
+            border: '1px solid #cbd5e1'
           }} className="md:hidden">
             <button
               onClick={() => setActiveView("chat")}
               style={{
-                padding: '4px 10px', borderRadius: '6px', fontSize: '11px', fontWeight: 600,
+                padding: '4px 10px', borderRadius: '4px', fontSize: '11px', fontWeight: 700,
                 border: 'none', cursor: 'pointer',
-                backgroundColor: activeView === 'chat' ? '#2563eb' : 'transparent',
-                color: activeView === 'chat' ? '#ffffff' : '#94a3b8'
+                backgroundColor: activeView === 'chat' ? '#1d4ed8' : 'transparent',
+                color: activeView === 'chat' ? '#ffffff' : '#334155'
               }}
             >
               ShopBot Chat
@@ -112,10 +112,10 @@ export default function App() {
             <button
               onClick={() => setActiveView("audit")}
               style={{
-                padding: '4px 10px', borderRadius: '6px', fontSize: '11px', fontWeight: 600,
+                padding: '4px 10px', borderRadius: '4px', fontSize: '11px', fontWeight: 700,
                 border: 'none', cursor: 'pointer',
-                backgroundColor: activeView === 'audit' ? '#7c3aed' : 'transparent',
-                color: activeView === 'audit' ? '#ffffff' : '#94a3b8'
+                backgroundColor: activeView === 'audit' ? '#6d28d9' : 'transparent',
+                color: activeView === 'audit' ? '#ffffff' : '#334155'
               }}
             >
               Agent Control Center
@@ -125,25 +125,25 @@ export default function App() {
           <div style={{
             display: 'flex', alignItems: 'center', gap: '6px',
             padding: '4px 10px', borderRadius: '20px',
-            backgroundColor: 'rgba(15,23,42,0.8)', border: '1px solid rgba(255,255,255,0.08)',
+            backgroundColor: '#f8fafc', border: '1px solid #cbd5e1',
             fontSize: '11px'
           }}>
-            <span style={{ color: '#64748b' }}>Session:</span>
-            <span style={{ fontFamily: 'JetBrains Mono, monospace', color: '#67e8f9', fontWeight: 600 }}>{sessionId}</span>
+            <span style={{ color: '#475569', fontWeight: 600 }}>Session:</span>
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', color: '#1d4ed8', fontWeight: 700 }}>{sessionId}</span>
           </div>
 
           <div style={{
             display: 'flex', alignItems: 'center', gap: '6px',
             padding: '4px 10px', borderRadius: '20px',
-            backgroundColor: 'rgba(15,23,42,0.8)', border: '1px solid rgba(255,255,255,0.08)',
+            backgroundColor: backendHealthy ? '#ecfdf5' : '#fef2f2',
+            border: `1px solid ${backendHealthy ? '#a7f3d0' : '#fecdd3'}`,
             fontSize: '11px'
           }}>
             <div style={{
               width: '8px', height: '8px', borderRadius: '50%',
-              backgroundColor: backendHealthy ? '#10b981' : '#f43f5e',
-              boxShadow: backendHealthy ? '0 0 8px #10b981' : 'none'
+              backgroundColor: backendHealthy ? '#059669' : '#dc2626'
             }} />
-            <span style={{ color: backendHealthy ? '#34d399' : '#fb7185', fontWeight: 500 }}>
+            <span style={{ color: backendHealthy ? '#047857' : '#b91c1c', fontWeight: 700 }}>
               {backendHealthy ? 'FastAPI Gateway Live' : 'Connecting...'}
             </span>
           </div>
@@ -155,9 +155,10 @@ export default function App() {
             rel="noopener noreferrer"
             style={{
               display: 'inline-flex', alignItems: 'center', gap: '4px',
-              fontSize: '11px', color: '#60a5fa', textDecoration: 'none',
+              fontSize: '11px', color: '#1d4ed8', textDecoration: 'none',
               padding: '4px 8px', borderRadius: '6px',
-              backgroundColor: 'rgba(37,99,235,0.1)', border: '1px solid rgba(37,99,235,0.25)'
+              backgroundColor: '#eff6ff', border: '1px solid #bfdbfe',
+              fontWeight: 700
             }}
             title="View live Schema.org JSON-LD Catalog"
           >
@@ -180,7 +181,8 @@ export default function App() {
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          position: 'relative'
+          position: 'relative',
+          backgroundColor: '#f8fafc'
         }}
         className={activeView === 'chat' ? 'w-full md:w-1/2 flex flex-col' : 'hidden md:flex md:w-1/2 flex-col'}
         >
@@ -196,9 +198,9 @@ export default function App() {
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          borderLeft: '1px solid rgba(255,255,255,0.08)',
+          borderLeft: '1px solid #cbd5e1',
           position: 'relative',
-          backgroundColor: '#090d16'
+          backgroundColor: '#ffffff'
         }}
         className={activeView === 'audit' ? 'w-full md:w-1/2 flex flex-col' : 'hidden md:flex md:w-1/2 flex-col'}
         >
@@ -212,30 +214,30 @@ export default function App() {
       {/* Footer System Status Bar */}
       <footer style={{
         height: '28px',
-        borderTop: '1px solid rgba(255,255,255,0.08)',
-        backgroundColor: '#04060a',
+        borderTop: '1px solid #cbd5e1',
+        backgroundColor: '#ffffff',
         padding: '0 16px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         fontSize: '11px',
         fontFamily: 'JetBrains Mono, monospace',
-        color: '#64748b',
+        color: '#334155',
         flexShrink: 0,
         zIndex: 20
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', color: '#34d399' }}>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', color: '#047857', fontWeight: 700 }}>
             <ShieldCheck size={13} />
             <span>Deterministic Policy Gate: ACTIVE</span>
           </span>
-          <span style={{ color: '#334155' }}>|</span>
-          <span style={{ color: '#94a3b8' }}>Spending Cap: ₹10,000</span>
-          <span style={{ color: '#334155' }}>|</span>
-          <span style={{ color: '#94a3b8' }}>Session Velocity: Max 2/hr</span>
+          <span style={{ color: '#cbd5e1' }}>|</span>
+          <span style={{ color: '#0f172a', fontWeight: 600 }}>Spending Cap: ₹10,000</span>
+          <span style={{ color: '#cbd5e1' }}>|</span>
+          <span style={{ color: '#0f172a', fontWeight: 600 }}>Session Velocity: Max 2/hr</span>
         </div>
         <div>
-          <span>Audit Store: <span style={{ color: '#60a5fa' }}>ecommerce_agentic.db (SQLite)</span></span>
+          <span>Audit Store: <span style={{ color: '#1d4ed8', fontWeight: 700 }}>ecommerce_agentic.db (SQLite)</span></span>
         </div>
       </footer>
     </div>

@@ -38,9 +38,12 @@ export default function ChatWindow({ sessionId, onAuditUpdated }) {
 
   // Option 2: Guided Recommendation inputs
   const [recRoughIdea, setRecRoughIdea] = useState('');
-  const [recUseCase, setRecUseCase] = useState('Coding & Dev');
+  const [recUseCase, setRecUseCase] = useState('Coding & Dev Marathons');
+  const [recCustomUseCase, setRecCustomUseCase] = useState('');
   const [recPriority, setRecPriority] = useState('Active Noise Cancelling');
-  const [recBudget, setRecBudget] = useState('Under ₹10,000');
+  const [recCustomPriority, setRecCustomPriority] = useState('');
+  const [recBudget, setRecBudget] = useState('Under ₹10,000 (Safety Limit)');
+  const [recCustomBudget, setRecCustomBudget] = useState('');
 
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
@@ -117,7 +120,11 @@ export default function ChatWindow({ sessionId, onAuditUpdated }) {
   // Execute Option 2: Guided Recommendation Submit
   const handleRecommendationSubmit = () => {
     const text = recRoughIdea.trim() || "Quality desk equipment";
-    const prompt = `I need a recommendation: "${text}". Primary Use Case: ${recUseCase}. Top Priority Feature: ${recPriority}. Budget Ceiling: ${recBudget}. Please suggest the top matching gear with live pricing and specs.`;
+    const finalUseCase = recCustomUseCase.trim() || recUseCase || "None / N/A";
+    const finalPriority = recCustomPriority.trim() || recPriority || "None / N/A";
+    const finalBudget = recCustomBudget.trim() ? `Under ₹${recCustomBudget.trim()}` : (recBudget || "None / N/A");
+
+    const prompt = `I need a recommendation: "${text}". Primary Use Case: ${finalUseCase}. Top Priority Feature: ${finalPriority}. Budget Ceiling: ${finalBudget}. Please suggest the top matching gear with live pricing and specs.`;
     sendMessage(prompt);
   };
 
@@ -196,38 +203,38 @@ export default function ChatWindow({ sessionId, onAuditUpdated }) {
   const dismissCheckout = () => setCheckoutData(null);
 
   return (
-    <div className="flex flex-col h-full" style={{ background: 'linear-gradient(180deg, #080c14 0%, #0a1120 100%)' }}>
+    <div className="flex flex-col h-full" style={{ backgroundColor: '#f8fafc' }}>
       {/* Chat Header */}
       <div style={{
         padding: '14px 18px',
-        borderBottom: '1px solid rgba(255,255,255,0.08)',
-        background: 'rgba(8,12,20,0.95)',
-        backdropFilter: 'blur(20px)',
+        borderBottom: '1px solid #cbd5e1',
+        backgroundColor: '#ffffff',
+        boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         zIndex: 20
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div style={{
-            width: '38px', height: '38px', borderRadius: '12px',
-            background: 'linear-gradient(135deg, #10b981, #06b6d4)',
+            width: '38px', height: '38px', borderRadius: '8px',
+            backgroundColor: '#059669',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 4px 14px rgba(16,185,129,0.35)'
+            boxShadow: '0 2px 6px rgba(5,150,105,0.25)'
           }}>
             <Bot size={20} color="white" />
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ fontWeight: 800, color: '#f8fafc', fontSize: '15px' }}>ShopBot AI</span>
+              <span style={{ fontWeight: 800, color: '#0f172a', fontSize: '15px' }}>ShopBot AI</span>
               <span style={{
                 fontSize: '10px', fontFamily: 'JetBrains Mono, monospace',
-                background: 'rgba(16,185,129,0.15)', color: '#34d399',
-                border: '1px solid rgba(16,185,129,0.3)', padding: '2px 8px', borderRadius: '20px',
-                display: 'flex', alignItems: 'center', gap: '4px'
+                backgroundColor: '#ecfdf5', color: '#047857',
+                border: '1px solid #a7f3d0', padding: '2px 8px', borderRadius: '20px',
+                display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 700
               }}>
                 <Globe size={10} /> Live Indian Web Deals
               </span>
             </div>
-            <p style={{ fontSize: '11px', color: '#64748b', marginTop: '1px' }}>
+            <p style={{ fontSize: '11px', color: '#475569', marginTop: '1px', fontWeight: 500 }}>
               Multi-Retailer Price Comparison · Lowest Price Guaranteed
             </p>
           </div>
@@ -236,13 +243,13 @@ export default function ChatWindow({ sessionId, onAuditUpdated }) {
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           {messages.length > 0 && (
             <button onClick={handleReset} style={{
-              background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)',
-              color: '#cbd5e1', padding: '6px 12px', borderRadius: '8px', cursor: 'pointer',
-              fontSize: '12px', display: 'flex', alignItems: 'center', gap: '6px',
+              backgroundColor: '#f1f5f9', border: '1px solid #cbd5e1',
+              color: '#1e293b', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer',
+              fontSize: '12px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px',
               transition: 'all 0.15s'
             }}
-              onMouseOver={e => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
-              onMouseOut={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
+              onMouseOver={e => e.currentTarget.style.backgroundColor = '#e2e8f0'}
+              onMouseOut={e => e.currentTarget.style.backgroundColor = '#f1f5f9'}
             >
               <RefreshCw size={12} />
               New Search / Change Option
@@ -252,7 +259,7 @@ export default function ChatWindow({ sessionId, onAuditUpdated }) {
       </div>
 
       {/* Main Content Area */}
-      <div style={{ flex: 1, overflowY: 'auto', padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <div style={{ flex: 1, overflowY: 'auto', padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px', backgroundColor: '#f8fafc' }}>
 
         {/* ============================================================ */}
         {/* DUAL OPTION WELCOME PORTAL (Appears before chatting starts)  */}
@@ -264,17 +271,17 @@ export default function ChatWindow({ sessionId, onAuditUpdated }) {
             <div style={{ textAlign: 'center', marginBottom: '20px' }}>
               <div style={{
                 display: 'inline-flex', alignItems: 'center', gap: '6px',
-                background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.3)',
-                color: '#34d399', padding: '4px 14px', borderRadius: '20px',
-                fontSize: '11px', fontWeight: 700, marginBottom: '10px'
+                backgroundColor: '#eff6ff', border: '1px solid #bfdbfe',
+                color: '#1e40af', padding: '4px 14px', borderRadius: '20px',
+                fontSize: '11px', fontWeight: 800, marginBottom: '10px'
               }}>
-                <Zap size={12} fill="#34d399" />
+                <Zap size={12} fill="#1e40af" />
                 Select Shopping Mode
               </div>
-              <h2 style={{ fontSize: '22px', fontWeight: 800, color: '#f8fafc', marginBottom: '6px' }}>
+              <h2 style={{ fontSize: '22px', fontWeight: 800, color: '#0f172a', marginBottom: '6px' }}>
                 How would you like to shop today?
               </h2>
-              <p style={{ fontSize: '13px', color: '#94a3b8', maxWidth: '440px', margin: '0 auto', lineHeight: 1.5 }}>
+              <p style={{ fontSize: '13px', color: '#334155', maxWidth: '440px', margin: '0 auto', lineHeight: 1.5, fontWeight: 500 }}>
                 Choose whether you know the exact product or need an intelligent personalized recommendation.
               </p>
             </div>
@@ -286,26 +293,25 @@ export default function ChatWindow({ sessionId, onAuditUpdated }) {
               <button
                 onClick={() => setActiveTab('direct_buy')}
                 style={{
-                  padding: '12px 14px', borderRadius: '12px', cursor: 'pointer', textAlign: 'left',
-                  background: activeTab === 'direct_buy' 
-                    ? 'linear-gradient(135deg, rgba(16,185,129,0.18) 0%, rgba(6,182,212,0.12) 100%)' 
-                    : 'rgba(30,41,59,0.4)',
-                  border: activeTab === 'direct_buy' ? '2px solid #10b981' : '1px solid rgba(255,255,255,0.08)',
+                  padding: '14px', borderRadius: '10px', cursor: 'pointer', textAlign: 'left',
+                  backgroundColor: activeTab === 'direct_buy' ? '#ffffff' : '#f1f5f9',
+                  border: activeTab === 'direct_buy' ? '2px solid #059669' : '1px solid #cbd5e1',
+                  boxShadow: activeTab === 'direct_buy' ? '0 2px 8px rgba(5,150,105,0.12)' : 'none',
                   transition: 'all 0.2s', position: 'relative'
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                   <span style={{
                     width: '24px', height: '24px', borderRadius: '6px',
-                    background: activeTab === 'direct_buy' ? '#10b981' : 'rgba(255,255,255,0.1)',
+                    backgroundColor: activeTab === 'direct_buy' ? '#059669' : '#cbd5e1',
                     display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white',
                     fontSize: '12px', fontWeight: 800
                   }}>1</span>
-                  <span style={{ fontSize: '14px', fontWeight: 700, color: activeTab === 'direct_buy' ? '#34d399' : '#f1f5f9' }}>
+                  <span style={{ fontSize: '14px', fontWeight: 800, color: activeTab === 'direct_buy' ? '#047857' : '#0f172a' }}>
                     Option 1: Direct Buy
                   </span>
                 </div>
-                <p style={{ fontSize: '11px', color: '#94a3b8', margin: 0, lineHeight: 1.4 }}>
+                <p style={{ fontSize: '11px', color: '#475569', margin: 0, lineHeight: 1.4, fontWeight: 500 }}>
                   Check lowest price online across Amazon, Flipkart & Croma.
                 </p>
               </button>
@@ -313,26 +319,25 @@ export default function ChatWindow({ sessionId, onAuditUpdated }) {
               <button
                 onClick={() => setActiveTab('recommendation')}
                 style={{
-                  padding: '12px 14px', borderRadius: '12px', cursor: 'pointer', textAlign: 'left',
-                  background: activeTab === 'recommendation' 
-                    ? 'linear-gradient(135deg, rgba(59,130,246,0.18) 0%, rgba(124,58,237,0.12) 100%)' 
-                    : 'rgba(30,41,59,0.4)',
-                  border: activeTab === 'recommendation' ? '2px solid #3b82f6' : '1px solid rgba(255,255,255,0.08)',
+                  padding: '14px', borderRadius: '10px', cursor: 'pointer', textAlign: 'left',
+                  backgroundColor: activeTab === 'recommendation' ? '#ffffff' : '#f1f5f9',
+                  border: activeTab === 'recommendation' ? '2px solid #1d4ed8' : '1px solid #cbd5e1',
+                  boxShadow: activeTab === 'recommendation' ? '0 2px 8px rgba(29,78,216,0.12)' : 'none',
                   transition: 'all 0.2s'
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                   <span style={{
                     width: '24px', height: '24px', borderRadius: '6px',
-                    background: activeTab === 'recommendation' ? '#3b82f6' : 'rgba(255,255,255,0.1)',
+                    backgroundColor: activeTab === 'recommendation' ? '#1d4ed8' : '#cbd5e1',
                     display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white',
                     fontSize: '12px', fontWeight: 800
                   }}>2</span>
-                  <span style={{ fontSize: '14px', fontWeight: 700, color: activeTab === 'recommendation' ? '#60a5fa' : '#f1f5f9' }}>
+                  <span style={{ fontSize: '14px', fontWeight: 800, color: activeTab === 'recommendation' ? '#1e40af' : '#0f172a' }}>
                     Option 2: Recommendation
                   </span>
                 </div>
-                <p style={{ fontSize: '11px', color: '#94a3b8', margin: 0, lineHeight: 1.4 }}>
+                <p style={{ fontSize: '11px', color: '#475569', margin: 0, lineHeight: 1.4, fontWeight: 500 }}>
                   Answer 3 quick questions for tailored gear suggestions.
                 </p>
               </button>
@@ -341,23 +346,23 @@ export default function ChatWindow({ sessionId, onAuditUpdated }) {
             {/* TAB 1: DIRECT BUY (LOWEST PRICE FINDER) FORM */}
             {activeTab === 'direct_buy' && (
               <div style={{
-                background: 'rgba(15,23,42,0.85)', border: '1px solid rgba(16,185,129,0.3)',
-                borderRadius: '16px', padding: '20px',
-                boxShadow: '0 12px 36px rgba(0,0,0,0.5)', backdropFilter: 'blur(16px)',
+                backgroundColor: '#ffffff', border: '1px solid #cbd5e1',
+                borderRadius: '12px', padding: '20px',
+                boxShadow: '0 4px 16px rgba(0,0,0,0.06)',
                 animation: 'fadeSlideIn 0.25s ease-out'
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
                   <div>
-                    <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#f8fafc', margin: 0 }}>
+                    <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#0f172a', margin: 0 }}>
                       🏷️ Direct Buy — Lowest Price Search
                     </h3>
-                    <p style={{ fontSize: '12px', color: '#64748b', margin: '3px 0 0' }}>
+                    <p style={{ fontSize: '12px', color: '#475569', margin: '3px 0 0', fontWeight: 500 }}>
                       Enter your product and model. We compare Amazon, Flipkart, Croma & Reliance Digital in real-time.
                     </p>
                   </div>
                   <span style={{
-                    fontSize: '11px', background: 'rgba(16,185,129,0.15)', color: '#34d399',
-                    border: '1px solid rgba(16,185,129,0.3)', padding: '3px 10px', borderRadius: '20px',
+                    fontSize: '11px', backgroundColor: '#ecfdf5', color: '#047857',
+                    border: '1px solid #a7f3d0', padding: '3px 10px', borderRadius: '20px',
                     fontWeight: 700
                   }}>
                     Price Comparison
@@ -367,7 +372,7 @@ export default function ChatWindow({ sessionId, onAuditUpdated }) {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   {/* Field 1: Product Name */}
                   <div>
-                    <label style={{ fontSize: '12px', fontWeight: 600, color: '#cbd5e1', display: 'block', marginBottom: '5px' }}>
+                    <label style={{ fontSize: '12px', fontWeight: 700, color: '#0f172a', display: 'block', marginBottom: '5px' }}>
                       Product Name / Category:
                     </label>
                     <input
@@ -376,16 +381,16 @@ export default function ChatWindow({ sessionId, onAuditUpdated }) {
                       onChange={e => setDbProductName(e.target.value)}
                       placeholder="e.g. Wireless Noise Cancelling Headphones, Mechanical Keyboard"
                       style={{
-                        width: '100%', background: 'rgba(30,41,59,0.8)', border: '1px solid rgba(255,255,255,0.12)',
-                        borderRadius: '10px', padding: '10px 14px', color: '#f8fafc', fontSize: '13px',
-                        outline: 'none', boxSizing: 'border-box'
+                        width: '100%', backgroundColor: '#ffffff', border: '1px solid #94a3b8',
+                        borderRadius: '8px', padding: '10px 14px', color: '#0f172a', fontSize: '13px',
+                        fontWeight: 600, outline: 'none', boxSizing: 'border-box'
                       }}
                     />
                   </div>
 
                   {/* Field 2: Company / Model */}
                   <div>
-                    <label style={{ fontSize: '12px', fontWeight: 600, color: '#cbd5e1', display: 'block', marginBottom: '5px' }}>
+                    <label style={{ fontSize: '12px', fontWeight: 700, color: '#0f172a', display: 'block', marginBottom: '5px' }}>
                       Company & Model:
                     </label>
                     <input
@@ -394,9 +399,9 @@ export default function ChatWindow({ sessionId, onAuditUpdated }) {
                       onChange={e => setDbBrandModel(e.target.value)}
                       placeholder="e.g. Sony WH-CH720N, Keychron K2, Logitech MX Master 3S"
                       style={{
-                        width: '100%', background: 'rgba(30,41,59,0.8)', border: '1px solid rgba(255,255,255,0.12)',
-                        borderRadius: '10px', padding: '10px 14px', color: '#f8fafc', fontSize: '13px',
-                        outline: 'none', boxSizing: 'border-box'
+                        width: '100%', backgroundColor: '#ffffff', border: '1px solid #94a3b8',
+                        borderRadius: '8px', padding: '10px 14px', color: '#0f172a', fontSize: '13px',
+                        fontWeight: 600, outline: 'none', boxSizing: 'border-box'
                       }}
                     />
                   </div>
@@ -404,10 +409,10 @@ export default function ChatWindow({ sessionId, onAuditUpdated }) {
                   {/* Field 3: Price Range */}
                   <div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
-                      <label style={{ fontSize: '12px', fontWeight: 600, color: '#cbd5e1' }}>
+                      <label style={{ fontSize: '12px', fontWeight: 700, color: '#0f172a' }}>
                         Maximum Budget (INR):
                       </label>
-                      <span style={{ fontSize: '11px', color: '#38bdf8' }}>₹10,000 Safety Cap</span>
+                      <span style={{ fontSize: '11px', color: '#0284c7', fontWeight: 700 }}>₹10,000 Safety Cap</span>
                     </div>
                     <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                       <input
@@ -416,9 +421,9 @@ export default function ChatWindow({ sessionId, onAuditUpdated }) {
                         onChange={e => setDbBudget(e.target.value)}
                         placeholder="10000"
                         style={{
-                          flex: 1, background: 'rgba(30,41,59,0.8)', border: '1px solid rgba(255,255,255,0.12)',
-                          borderRadius: '10px', padding: '10px 14px', color: '#f8fafc', fontSize: '13px',
-                          outline: 'none', boxSizing: 'border-box'
+                          flex: 1, backgroundColor: '#ffffff', border: '1px solid #94a3b8',
+                          borderRadius: '8px', padding: '10px 14px', color: '#0f172a', fontSize: '13px',
+                          fontWeight: 700, outline: 'none', boxSizing: 'border-box'
                         }}
                       />
                       {[5000, 8000, 10000].map(val => (
@@ -427,11 +432,11 @@ export default function ChatWindow({ sessionId, onAuditUpdated }) {
                           type="button"
                           onClick={() => setDbBudget(String(val))}
                           style={{
-                            background: dbBudget === String(val) ? 'rgba(16,185,129,0.25)' : 'rgba(255,255,255,0.06)',
-                            border: dbBudget === String(val) ? '1px solid #10b981' : '1px solid rgba(255,255,255,0.1)',
-                            color: dbBudget === String(val) ? '#34d399' : '#94a3b8',
-                            padding: '9px 12px', borderRadius: '8px', fontSize: '12px', cursor: 'pointer',
-                            fontWeight: 600
+                            backgroundColor: dbBudget === String(val) ? '#ecfdf5' : '#f1f5f9',
+                            border: dbBudget === String(val) ? '1px solid #059669' : '1px solid #cbd5e1',
+                            color: dbBudget === String(val) ? '#047857' : '#334155',
+                            padding: '9px 12px', borderRadius: '6px', fontSize: '12px', cursor: 'pointer',
+                            fontWeight: 700
                           }}
                         >
                           ₹{val.toLocaleString('en-IN')}
@@ -442,7 +447,7 @@ export default function ChatWindow({ sessionId, onAuditUpdated }) {
 
                   {/* Quick Presets */}
                   <div style={{ marginTop: '2px' }}>
-                    <span style={{ fontSize: '11px', color: '#64748b', display: 'block', marginBottom: '6px' }}>
+                    <span style={{ fontSize: '11px', color: '#475569', display: 'block', marginBottom: '6px', fontWeight: 600 }}>
                       Popular Searches:
                     </span>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
@@ -457,12 +462,13 @@ export default function ChatWindow({ sessionId, onAuditUpdated }) {
                             handleDirectBuySubmit(preset.name, preset.model, preset.budget);
                           }}
                           style={{
-                            background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
-                            color: '#cbd5e1', padding: '4px 10px', borderRadius: '16px', fontSize: '11px',
-                            cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px'
+                            backgroundColor: '#f1f5f9', border: '1px solid #cbd5e1',
+                            color: '#0f172a', padding: '4px 10px', borderRadius: '16px', fontSize: '11px',
+                            cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px',
+                            fontWeight: 600
                           }}
-                          onMouseOver={e => e.currentTarget.style.background = 'rgba(16,185,129,0.15)'}
-                          onMouseOut={e => e.currentTarget.style.background = 'rgba(255,255,255,0.04)'}
+                          onMouseOver={e => e.currentTarget.style.backgroundColor = '#ecfdf5'}
+                          onMouseOut={e => e.currentTarget.style.backgroundColor = '#f1f5f9'}
                         >
                           ⚡ {preset.model}
                         </button>
@@ -476,14 +482,14 @@ export default function ChatWindow({ sessionId, onAuditUpdated }) {
                     onClick={() => handleDirectBuySubmit()}
                     disabled={!dbProductName.trim() || !dbBrandModel.trim() || isThinking}
                     style={{
-                      marginTop: '6px', padding: '12px 18px', borderRadius: '12px', border: 'none',
-                      background: (!dbProductName.trim() || !dbBrandModel.trim() || isThinking)
-                        ? 'rgba(255,255,255,0.08)'
-                        : 'linear-gradient(135deg, #10b981 0%, #0d9488 100%)',
+                      marginTop: '6px', padding: '12px 18px', borderRadius: '8px', border: 'none',
+                      backgroundColor: (!dbProductName.trim() || !dbBrandModel.trim() || isThinking)
+                        ? '#cbd5e1'
+                        : '#059669',
                       color: 'white', fontSize: '14px', fontWeight: 800,
                       cursor: (!dbProductName.trim() || !dbBrandModel.trim() || isThinking) ? 'not-allowed' : 'pointer',
                       display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-                      boxShadow: '0 4px 16px rgba(16,185,129,0.3)', transition: 'all 0.2s'
+                      boxShadow: '0 2px 8px rgba(5,150,105,0.25)', transition: 'all 0.2s'
                     }}
                   >
                     {isThinking ? (
@@ -505,23 +511,23 @@ export default function ChatWindow({ sessionId, onAuditUpdated }) {
             {/* TAB 2: GUIDED RECOMMENDATION FORM */}
             {activeTab === 'recommendation' && (
               <div style={{
-                background: 'rgba(15,23,42,0.85)', border: '1px solid rgba(59,130,246,0.3)',
-                borderRadius: '16px', padding: '20px',
-                boxShadow: '0 12px 36px rgba(0,0,0,0.5)', backdropFilter: 'blur(16px)',
+                backgroundColor: '#ffffff', border: '1px solid #cbd5e1',
+                borderRadius: '12px', padding: '20px',
+                boxShadow: '0 4px 16px rgba(0,0,0,0.06)',
                 animation: 'fadeSlideIn 0.25s ease-out'
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
                   <div>
-                    <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#f8fafc', margin: 0 }}>
+                    <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#0f172a', margin: 0 }}>
                       🎯 Guided Recommendation — Interactive Profiling
                     </h3>
-                    <p style={{ fontSize: '12px', color: '#64748b', margin: '3px 0 0' }}>
+                    <p style={{ fontSize: '12px', color: '#475569', margin: '3px 0 0', fontWeight: 500 }}>
                       Tell us what you need in plain words, select your preferences, and ShopBot will find the perfect gear.
                     </p>
                   </div>
                   <span style={{
-                    fontSize: '11px', background: 'rgba(59,130,246,0.15)', color: '#60a5fa',
-                    border: '1px solid rgba(59,130,246,0.3)', padding: '3px 10px', borderRadius: '20px',
+                    fontSize: '11px', backgroundColor: '#eff6ff', color: '#1e40af',
+                    border: '1px solid #bfdbfe', padding: '3px 10px', borderRadius: '20px',
                     fontWeight: 700
                   }}>
                     AI Profiling
@@ -531,7 +537,7 @@ export default function ChatWindow({ sessionId, onAuditUpdated }) {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                   {/* Step 1: Rough Idea */}
                   <div>
-                    <label style={{ fontSize: '12px', fontWeight: 600, color: '#cbd5e1', display: 'block', marginBottom: '5px' }}>
+                    <label style={{ fontSize: '12px', fontWeight: 700, color: '#0f172a', display: 'block', marginBottom: '5px' }}>
                       Rough Idea of What You Want:
                     </label>
                     <textarea
@@ -540,100 +546,154 @@ export default function ChatWindow({ sessionId, onAuditUpdated }) {
                       onChange={e => setRecRoughIdea(e.target.value)}
                       placeholder="e.g. I need comfortable headphones for long coding sessions and crystal clear client calls..."
                       style={{
-                        width: '100%', background: 'rgba(30,41,59,0.8)', border: '1px solid rgba(255,255,255,0.12)',
-                        borderRadius: '10px', padding: '10px 14px', color: '#f8fafc', fontSize: '13px',
-                        outline: 'none', boxSizing: 'border-box', resize: 'none'
+                        width: '100%', backgroundColor: '#ffffff', border: '1px solid #94a3b8',
+                        borderRadius: '8px', padding: '10px 14px', color: '#0f172a', fontSize: '13px',
+                        fontWeight: 600, outline: 'none', boxSizing: 'border-box', resize: 'none'
                       }}
                     />
                   </div>
 
                   {/* Question 1: Use Case */}
                   <div>
-                    <label style={{ fontSize: '12px', fontWeight: 600, color: '#cbd5e1', display: 'block', marginBottom: '6px' }}>
+                    <label style={{ fontSize: '12px', fontWeight: 700, color: '#0f172a', display: 'block', marginBottom: '6px' }}>
                       1. Primary Use Case:
                     </label>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '8px' }}>
                       {[
                         "Coding & Dev Marathons",
                         "Zoom & Client Meetings",
                         "Gaming & High-FPS Audio",
-                        "Content Creation & Podcasting"
+                        "Content Creation & Podcasting",
+                        "None / N/A"
                       ].map(val => (
                         <button
                           key={val}
                           type="button"
-                          onClick={() => setRecUseCase(val)}
+                          onClick={() => {
+                            setRecUseCase(val);
+                            setRecCustomUseCase('');
+                          }}
                           style={{
-                            background: recUseCase === val ? 'rgba(59,130,246,0.25)' : 'rgba(255,255,255,0.05)',
-                            border: recUseCase === val ? '1px solid #3b82f6' : '1px solid rgba(255,255,255,0.08)',
-                            color: recUseCase === val ? '#93c5fd' : '#cbd5e1',
+                            backgroundColor: (recUseCase === val && !recCustomUseCase) ? '#eff6ff' : '#f1f5f9',
+                            border: (recUseCase === val && !recCustomUseCase) ? '1px solid #1d4ed8' : '1px solid #cbd5e1',
+                            color: (recUseCase === val && !recCustomUseCase) ? '#1e40af' : '#334155',
                             padding: '6px 12px', borderRadius: '20px', fontSize: '12px', cursor: 'pointer',
-                            fontWeight: 600
+                            fontWeight: 700
                           }}
                         >
-                          {recUseCase === val ? '✓ ' : ''}{val}
+                          {(recUseCase === val && !recCustomUseCase) ? '✓ ' : ''}{val}
                         </button>
                       ))}
                     </div>
+                    <input
+                      type="text"
+                      placeholder="Or enter your custom use case / opinion..."
+                      value={recCustomUseCase}
+                      onChange={e => {
+                        setRecCustomUseCase(e.target.value);
+                        setRecUseCase(e.target.value);
+                      }}
+                      style={{
+                        width: '100%', backgroundColor: '#ffffff', border: recCustomUseCase ? '1.5px solid #1d4ed8' : '1px solid #cbd5e1',
+                        borderRadius: '8px', padding: '7px 12px', color: '#0f172a', fontSize: '12px',
+                        fontWeight: 600, outline: 'none', boxSizing: 'border-box'
+                      }}
+                    />
                   </div>
 
                   {/* Question 2: Top Priority */}
                   <div>
-                    <label style={{ fontSize: '12px', fontWeight: 600, color: '#cbd5e1', display: 'block', marginBottom: '6px' }}>
+                    <label style={{ fontSize: '12px', fontWeight: 700, color: '#0f172a', display: 'block', marginBottom: '6px' }}>
                       2. Top Priority Feature:
                     </label>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '8px' }}>
                       {[
                         "Active Noise Cancelling",
                         "All-Day Ergonomic Comfort",
                         "Wireless & Multi-Device",
-                        "Studio Sound & Voice Clarity"
+                        "Studio Sound & Voice Clarity",
+                        "None / N/A"
                       ].map(val => (
                         <button
                           key={val}
                           type="button"
-                          onClick={() => setRecPriority(val)}
+                          onClick={() => {
+                            setRecPriority(val);
+                            setRecCustomPriority('');
+                          }}
                           style={{
-                            background: recPriority === val ? 'rgba(124,58,237,0.25)' : 'rgba(255,255,255,0.05)',
-                            border: recPriority === val ? '1px solid #8b5cf6' : '1px solid rgba(255,255,255,0.08)',
-                            color: recPriority === val ? '#c4b5fd' : '#cbd5e1',
+                            backgroundColor: (recPriority === val && !recCustomPriority) ? '#f5f3ff' : '#f1f5f9',
+                            border: (recPriority === val && !recCustomPriority) ? '1px solid #6d28d9' : '1px solid #cbd5e1',
+                            color: (recPriority === val && !recCustomPriority) ? '#5b21b6' : '#334155',
                             padding: '6px 12px', borderRadius: '20px', fontSize: '12px', cursor: 'pointer',
-                            fontWeight: 600
+                            fontWeight: 700
                           }}
                         >
-                          {recPriority === val ? '✓ ' : ''}{val}
+                          {(recPriority === val && !recCustomPriority) ? '✓ ' : ''}{val}
                         </button>
                       ))}
                     </div>
+                    <input
+                      type="text"
+                      placeholder="Or enter your custom priority feature / opinion..."
+                      value={recCustomPriority}
+                      onChange={e => {
+                        setRecCustomPriority(e.target.value);
+                        setRecPriority(e.target.value);
+                      }}
+                      style={{
+                        width: '100%', backgroundColor: '#ffffff', border: recCustomPriority ? '1.5px solid #6d28d9' : '1px solid #cbd5e1',
+                        borderRadius: '8px', padding: '7px 12px', color: '#0f172a', fontSize: '12px',
+                        fontWeight: 600, outline: 'none', boxSizing: 'border-box'
+                      }}
+                    />
                   </div>
 
                   {/* Question 3: Budget */}
                   <div>
-                    <label style={{ fontSize: '12px', fontWeight: 600, color: '#cbd5e1', display: 'block', marginBottom: '6px' }}>
+                    <label style={{ fontSize: '12px', fontWeight: 700, color: '#0f172a', display: 'block', marginBottom: '6px' }}>
                       3. Maximum Budget Ceiling:
                     </label>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '8px' }}>
                       {[
                         "Under ₹4,000",
                         "Under ₹7,000",
-                        "Under ₹10,000 (Safety Limit)"
+                        "Under ₹10,000 (Safety Limit)",
+                        "None / N/A (No Limit)"
                       ].map(val => (
                         <button
                           key={val}
                           type="button"
-                          onClick={() => setRecBudget(val)}
+                          onClick={() => {
+                            setRecBudget(val);
+                            setRecCustomBudget('');
+                          }}
                           style={{
-                            background: recBudget === val ? 'rgba(16,185,129,0.25)' : 'rgba(255,255,255,0.05)',
-                            border: recBudget === val ? '1px solid #10b981' : '1px solid rgba(255,255,255,0.08)',
-                            color: recBudget === val ? '#34d399' : '#cbd5e1',
+                            backgroundColor: (recBudget === val && !recCustomBudget) ? '#ecfdf5' : '#f1f5f9',
+                            border: (recBudget === val && !recCustomBudget) ? '1px solid #059669' : '1px solid #cbd5e1',
+                            color: (recBudget === val && !recCustomBudget) ? '#047857' : '#334155',
                             padding: '6px 12px', borderRadius: '20px', fontSize: '12px', cursor: 'pointer',
-                            fontWeight: 600
+                            fontWeight: 700
                           }}
                         >
-                          {recBudget === val ? '✓ ' : ''}{val}
+                          {(recBudget === val && !recCustomBudget) ? '✓ ' : ''}{val}
                         </button>
                       ))}
                     </div>
+                    <input
+                      type="text"
+                      placeholder="Or enter your custom budget limit (e.g. 6500 or Unlimited)..."
+                      value={recCustomBudget}
+                      onChange={e => {
+                        setRecCustomBudget(e.target.value);
+                        setRecBudget(e.target.value);
+                      }}
+                      style={{
+                        width: '100%', backgroundColor: '#ffffff', border: recCustomBudget ? '1.5px solid #059669' : '1px solid #cbd5e1',
+                        borderRadius: '8px', padding: '7px 12px', color: '#0f172a', fontSize: '12px',
+                        fontWeight: 600, outline: 'none', boxSizing: 'border-box'
+                      }}
+                    />
                   </div>
 
                   {/* Submit Button */}
@@ -642,11 +702,11 @@ export default function ChatWindow({ sessionId, onAuditUpdated }) {
                     onClick={handleRecommendationSubmit}
                     disabled={isThinking}
                     style={{
-                      marginTop: '6px', padding: '12px 18px', borderRadius: '12px', border: 'none',
-                      background: 'linear-gradient(135deg, #2563eb 0%, #7c3aed 100%)',
+                      marginTop: '6px', padding: '12px 18px', borderRadius: '8px', border: 'none',
+                      backgroundColor: '#1d4ed8',
                       color: 'white', fontSize: '14px', fontWeight: 800, cursor: 'pointer',
                       display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-                      boxShadow: '0 4px 16px rgba(37,99,235,0.3)', transition: 'all 0.2s'
+                      boxShadow: '0 2px 8px rgba(29,78,216,0.25)', transition: 'all 0.2s'
                     }}
                   >
                     {isThinking ? (
@@ -684,19 +744,20 @@ export default function ChatWindow({ sessionId, onAuditUpdated }) {
         {isThinking && (
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
             <div style={{
-              width: '32px', height: '32px', borderRadius: '10px', flexShrink: 0,
-              background: 'linear-gradient(135deg, #10b981, #06b6d4)',
+              width: '32px', height: '32px', borderRadius: '8px', flexShrink: 0,
+              backgroundColor: '#059669',
               display: 'flex', alignItems: 'center', justifyContent: 'center'
             }}>
               <Bot size={16} color="white" />
             </div>
             <div style={{
-              background: 'rgba(30,41,59,0.7)', border: '1px solid rgba(255,255,255,0.08)',
-              borderRadius: '16px', borderTopLeftRadius: '4px', padding: '12px 16px',
-              display: 'flex', alignItems: 'center', gap: '10px'
+              backgroundColor: '#ffffff', border: '1px solid #cbd5e1',
+              borderRadius: '12px', borderTopLeftRadius: '2px', padding: '12px 16px',
+              display: 'flex', alignItems: 'center', gap: '10px',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
             }}>
-              <Loader2 size={15} color="#10b981" style={{ animation: 'spin 1s linear infinite' }} />
-              <span style={{ fontSize: '13px', color: '#94a3b8' }}>{thinkingLabel}</span>
+              <Loader2 size={15} color="#059669" style={{ animation: 'spin 1s linear infinite' }} />
+              <span style={{ fontSize: '13px', color: '#334155', fontWeight: 600 }}>{thinkingLabel}</span>
             </div>
           </div>
         )}
@@ -706,8 +767,8 @@ export default function ChatWindow({ sessionId, onAuditUpdated }) {
           <div style={{ position: 'relative' }}>
             <button onClick={dismissCheckout} style={{
               position: 'absolute', top: '-8px', right: '0px', zIndex: 10,
-              background: 'rgba(244,63,94,0.2)', border: '1px solid rgba(244,63,94,0.4)',
-              color: '#fb7185', borderRadius: '50%', width: '24px', height: '24px',
+              backgroundColor: '#fef2f2', border: '1px solid #fecdd3',
+              color: '#dc2626', borderRadius: '50%', width: '24px', height: '24px',
               display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'
             }}>
               <X size={12} />
@@ -727,18 +788,18 @@ export default function ChatWindow({ sessionId, onAuditUpdated }) {
       {/* Input Box */}
       <div style={{
         padding: '14px 16px',
-        borderTop: '1px solid rgba(255,255,255,0.08)',
-        background: 'rgba(8,12,20,0.95)', backdropFilter: 'blur(20px)'
+        borderTop: '1px solid #cbd5e1',
+        backgroundColor: '#ffffff', boxShadow: '0 -2px 6px rgba(0,0,0,0.03)'
       }}>
         <form onSubmit={handleSubmit}>
           <div style={{
             display: 'flex', alignItems: 'flex-end', gap: '10px',
-            background: 'rgba(30,41,59,0.6)', border: '1px solid rgba(255,255,255,0.1)',
-            borderRadius: '14px', padding: '10px 12px 10px 16px',
+            backgroundColor: '#ffffff', border: '1px solid #94a3b8',
+            borderRadius: '10px', padding: '10px 12px 10px 16px',
             transition: 'border-color 0.15s'
           }}
-            onFocus={e => e.currentTarget.style.borderColor = 'rgba(16,185,129,0.5)'}
-            onBlur={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'}
+            onFocus={e => e.currentTarget.style.borderColor = '#1d4ed8'}
+            onBlur={e => e.currentTarget.style.borderColor = '#94a3b8'}
           >
             <textarea
               ref={inputRef}
@@ -750,8 +811,8 @@ export default function ChatWindow({ sessionId, onAuditUpdated }) {
               rows={1}
               style={{
                 flex: 1, background: 'transparent', border: 'none', outline: 'none',
-                color: '#f1f5f9', fontSize: '14px', resize: 'none', lineHeight: '1.5',
-                fontFamily: 'Plus Jakarta Sans, system-ui, sans-serif',
+                color: '#0f172a', fontSize: '14px', resize: 'none', lineHeight: '1.5',
+                fontFamily: 'Plus Jakarta Sans, system-ui, sans-serif', fontWeight: 600,
                 maxHeight: '120px', overflowY: 'auto'
               }}
             />
@@ -759,26 +820,26 @@ export default function ChatWindow({ sessionId, onAuditUpdated }) {
               type="submit"
               disabled={!inputText.trim() || isThinking}
               style={{
-                width: '36px', height: '36px', borderRadius: '10px', flexShrink: 0,
-                background: inputText.trim() && !isThinking
-                  ? 'linear-gradient(135deg, #10b981, #0d9488)'
-                  : 'rgba(255,255,255,0.06)',
+                width: '36px', height: '36px', borderRadius: '8px', flexShrink: 0,
+                backgroundColor: inputText.trim() && !isThinking
+                  ? '#1d4ed8'
+                  : '#cbd5e1',
                 border: 'none', cursor: inputText.trim() && !isThinking ? 'pointer' : 'not-allowed',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 transition: 'all 0.15s',
-                boxShadow: inputText.trim() && !isThinking ? '0 4px 12px rgba(16,185,129,0.4)' : 'none'
+                boxShadow: inputText.trim() && !isThinking ? '0 2px 6px rgba(29,78,216,0.3)' : 'none'
               }}
             >
               {isThinking
                 ? <Loader2 size={16} color="#64748b" style={{ animation: 'spin 1s linear infinite' }} />
-                : <Send size={16} color={inputText.trim() ? 'white' : '#475569'} />
+                : <Send size={16} color={inputText.trim() ? 'white' : '#64748b'} />
               }
             </button>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '6px', paddingX: '4px' }}>
-            <span style={{ fontSize: '11px', color: '#475569' }}>Press Enter to send · Shift+Enter for new line</span>
-            <span style={{ fontSize: '11px', color: '#059669', display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <ShieldCheck size={11} color="#10b981" />
+            <span style={{ fontSize: '11px', color: '#475569', fontWeight: 500 }}>Press Enter to send · Shift+Enter for new line</span>
+            <span style={{ fontSize: '11px', color: '#047857', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 700 }}>
+              <ShieldCheck size={11} color="#059669" />
               ₹10,000 Safety Cap · Multi-Store Price Verified
             </span>
           </div>
@@ -817,13 +878,11 @@ function MessageBubble({ msg, onSuggestionClick, onInitiateCheckout, onOpenPrice
     }}>
       {/* Avatar */}
       <div style={{
-        width: '32px', height: '32px', borderRadius: '10px', flexShrink: 0,
-        background: isUser
-          ? 'linear-gradient(135deg, #0ea5e9, #2563eb)'
-          : 'linear-gradient(135deg, #10b981, #06b6d4)',
+        width: '32px', height: '32px', borderRadius: '8px', flexShrink: 0,
+        backgroundColor: isUser ? '#1d4ed8' : '#059669',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontSize: '13px', fontWeight: 700, color: 'white',
-        boxShadow: isUser ? '0 4px 12px rgba(14,165,233,0.3)' : '0 4px 12px rgba(16,185,129,0.3)'
+        fontSize: '13px', fontWeight: 800, color: 'white',
+        boxShadow: isUser ? '0 2px 6px rgba(29,78,216,0.25)' : '0 2px 6px rgba(5,150,105,0.25)'
       }}>
         {isUser ? 'U' : <Bot size={16} color="white" />}
       </div>
@@ -831,19 +890,18 @@ function MessageBubble({ msg, onSuggestionClick, onInitiateCheckout, onOpenPrice
       <div style={{ maxWidth: '85%', display: 'flex', flexDirection: 'column', gap: '8px', alignItems: isUser ? 'flex-end' : 'flex-start' }}>
         {/* Text bubble */}
         <div style={{
-          background: isUser
-            ? 'linear-gradient(135deg, #1d4ed8, #1e40af)'
-            : 'rgba(30,41,59,0.8)',
-          border: isUser ? 'none' : '1px solid rgba(255,255,255,0.08)',
-          borderRadius: '16px',
-          borderTopRightRadius: isUser ? '4px' : '16px',
-          borderTopLeftRadius: isUser ? '16px' : '4px',
+          backgroundColor: isUser ? '#1e3a8a' : '#ffffff',
+          color: isUser ? '#ffffff' : '#0f172a',
+          border: isUser ? 'none' : '1px solid #cbd5e1',
+          boxShadow: isUser ? '0 2px 6px rgba(30,58,138,0.2)' : '0 1px 3px rgba(0,0,0,0.05)',
+          borderRadius: '12px',
+          borderTopRightRadius: isUser ? '2px' : '12px',
+          borderTopLeftRadius: isUser ? '12px' : '2px',
           padding: '11px 15px',
-          color: '#e2e8f0', fontSize: '14px', lineHeight: '1.6',
-          whiteSpace: 'pre-wrap', wordBreak: 'break-word',
-          backdropFilter: 'blur(10px)'
+          fontSize: '14px', lineHeight: '1.6', fontWeight: 500,
+          whiteSpace: 'pre-wrap', wordBreak: 'break-word'
         }}>
-          {formatMessageText(msg.text)}
+          {formatMessageText(msg.text, isUser)}
         </div>
 
         {/* Option 1: Lowest Price Deal Card */}
@@ -893,13 +951,13 @@ function MessageBubble({ msg, onSuggestionClick, onInitiateCheckout, onOpenPrice
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
             {msg.quick_suggestions.map((s, i) => (
               <button key={i} onClick={() => onSuggestionClick(s)} style={{
-                background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.3)',
-                color: '#6ee7b7', padding: '5px 12px', borderRadius: '20px',
+                backgroundColor: '#ecfdf5', border: '1px solid #a7f3d0',
+                color: '#047857', padding: '5px 12px', borderRadius: '20px',
                 fontSize: '12px', cursor: 'pointer', transition: 'all 0.15s',
-                fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 500
+                fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700
               }}
-                onMouseOver={e => { e.currentTarget.style.background = 'rgba(16,185,129,0.25)'; e.currentTarget.style.color = '#a7f3d0'; }}
-                onMouseOut={e => { e.currentTarget.style.background = 'rgba(16,185,129,0.1)'; e.currentTarget.style.color = '#6ee7b7'; }}
+                onMouseOver={e => { e.currentTarget.style.backgroundColor = '#d1fae5'; }}
+                onMouseOut={e => { e.currentTarget.style.backgroundColor = '#ecfdf5'; }}
               >
                 {s}
               </button>
@@ -907,7 +965,7 @@ function MessageBubble({ msg, onSuggestionClick, onInitiateCheckout, onOpenPrice
           </div>
         )}
 
-        <span style={{ fontSize: '10px', color: '#334155' }}>
+        <span style={{ fontSize: '10px', color: '#64748b', fontWeight: 600 }}>
           {msg.ts?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
         </span>
       </div>
@@ -923,25 +981,25 @@ function LowestPriceDealCard({ deal, onBuyNow, onOpenPriceWatch }) {
 
   return (
     <div style={{
-      background: 'linear-gradient(135deg, rgba(16,185,129,0.08) 0%, rgba(15,23,42,0.95) 100%)',
-      border: '1px solid rgba(16,185,129,0.4)', borderRadius: '16px', overflow: 'hidden',
-      boxShadow: '0 8px 32px rgba(0,0,0,0.5)', width: '100%',
+      backgroundColor: '#ffffff',
+      border: '1px solid #cbd5e1', borderRadius: '12px', overflow: 'hidden',
+      boxShadow: '0 4px 12px rgba(0,0,0,0.06)', width: '100%',
       animation: 'fadeSlideIn 0.3s ease-out'
     }}>
       {/* Top Banner */}
       <div style={{
-        background: 'linear-gradient(90deg, rgba(16,185,129,0.25) 0%, rgba(6,182,212,0.15) 100%)',
-        borderBottom: '1px solid rgba(16,185,129,0.3)', padding: '8px 14px',
+        backgroundColor: '#ecfdf5',
+        borderBottom: '1px solid #a7f3d0', padding: '8px 14px',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: 800, color: '#34d399' }}>
-          <Award size={15} color="#34d399" />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: 800, color: '#047857' }}>
+          <Award size={15} color="#047857" />
           LOWEST VERIFIED PRICE IN INDIA
         </div>
         {deal.savings_inr > 0 && (
           <span style={{
-            fontSize: '11px', background: 'rgba(16,185,129,0.25)', color: '#34d399',
-            padding: '2px 8px', borderRadius: '12px', fontWeight: 700
+            fontSize: '11px', backgroundColor: '#059669', color: '#ffffff',
+            padding: '2px 8px', borderRadius: '12px', fontWeight: 800
           }}>
             Save ₹{deal.savings_inr.toLocaleString('en-IN')}
           </span>
@@ -954,32 +1012,32 @@ function LowestPriceDealCard({ deal, onBuyNow, onOpenPriceWatch }) {
           src={deal.image_url}
           alt={deal.product_name}
           style={{
-            width: '84px', height: '84px', borderRadius: '12px', objectFit: 'cover',
-            flexShrink: 0, border: '1px solid rgba(255,255,255,0.12)', background: '#0f172a'
+            width: '84px', height: '84px', borderRadius: '8px', objectFit: 'cover',
+            flexShrink: 0, border: '1px solid #cbd5e1', backgroundColor: '#f8fafc'
           }}
           onError={e => { e.target.src = 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=300&q=80'; }}
         />
         <div style={{ flex: 1, minWidth: 0 }}>
           <span style={{
-            fontSize: '10px', background: 'rgba(59,130,246,0.15)', color: '#60a5fa',
-            border: '1px solid rgba(59,130,246,0.3)', padding: '2px 8px', borderRadius: '20px',
+            fontSize: '10px', backgroundColor: '#eff6ff', color: '#1e40af',
+            border: '1px solid #bfdbfe', padding: '2px 8px', borderRadius: '20px',
             fontWeight: 700
           }}>
             {deal.category}
           </span>
-          <h4 style={{ fontSize: '15px', fontWeight: 800, color: '#f8fafc', margin: '4px 0 2px', lineHeight: 1.3 }}>
+          <h4 style={{ fontSize: '15px', fontWeight: 800, color: '#0f172a', margin: '4px 0 2px', lineHeight: 1.3 }}>
             {deal.brand_model}
           </h4>
-          <p style={{ fontSize: '12px', color: '#94a3b8', lineHeight: 1.4, margin: '2px 0 6px' }}>
+          <p style={{ fontSize: '12px', color: '#334155', lineHeight: 1.4, margin: '2px 0 6px', fontWeight: 500 }}>
             {deal.specs_summary}
           </p>
 
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-            <span style={{ fontSize: '20px', fontWeight: 800, color: '#34d399', fontFamily: 'JetBrains Mono, monospace' }}>
+            <span style={{ fontSize: '20px', fontWeight: 800, color: '#047857', fontFamily: 'JetBrains Mono, monospace' }}>
               ₹{deal.lowest_price_inr.toLocaleString('en-IN')}
             </span>
-            <span style={{ fontSize: '12px', color: '#64748b' }}>
-              at <strong style={{ color: '#f8fafc' }}>{deal.lowest_store}</strong>
+            <span style={{ fontSize: '12px', color: '#475569' }}>
+              at <strong style={{ color: '#0f172a' }}>{deal.lowest_store}</strong>
             </span>
           </div>
         </div>
@@ -988,7 +1046,7 @@ function LowestPriceDealCard({ deal, onBuyNow, onOpenPriceWatch }) {
       {/* Multi-Store Comparison Table */}
       {deal.retailers && deal.retailers.length > 0 && (
         <div style={{ padding: '0 14px 12px' }}>
-          <span style={{ fontSize: '11px', color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '6px' }}>
+          <span style={{ fontSize: '11px', color: '#0f172a', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '6px' }}>
             Multi-Retailer Price Comparison:
           </span>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -997,19 +1055,19 @@ function LowestPriceDealCard({ deal, onBuyNow, onOpenPriceWatch }) {
                 key={i}
                 style={{
                   display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                  padding: '7px 10px', borderRadius: '8px',
-                  background: r.is_lowest ? 'rgba(16,185,129,0.12)' : 'rgba(255,255,255,0.03)',
-                  border: r.is_lowest ? '1px solid rgba(16,185,129,0.4)' : '1px solid rgba(255,255,255,0.05)'
+                  padding: '7px 10px', borderRadius: '6px',
+                  backgroundColor: r.is_lowest ? '#ecfdf5' : '#f8fafc',
+                  border: r.is_lowest ? '1px solid #a7f3d0' : '1px solid #e2e8f0'
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Store size={13} color={r.is_lowest ? '#34d399' : '#94a3b8'} />
-                  <span style={{ fontSize: '12px', fontWeight: r.is_lowest ? 700 : 500, color: r.is_lowest ? '#34d399' : '#cbd5e1' }}>
+                  <Store size={13} color={r.is_lowest ? '#047857' : '#475569'} />
+                  <span style={{ fontSize: '12px', fontWeight: r.is_lowest ? 800 : 600, color: r.is_lowest ? '#047857' : '#0f172a' }}>
                     {r.store}
                   </span>
                   {r.is_lowest && (
                     <span style={{
-                      fontSize: '9px', background: '#10b981', color: 'white',
+                      fontSize: '9px', backgroundColor: '#059669', color: 'white',
                       padding: '1px 6px', borderRadius: '10px', fontWeight: 800
                     }}>
                       LOWEST
@@ -1018,7 +1076,7 @@ function LowestPriceDealCard({ deal, onBuyNow, onOpenPriceWatch }) {
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <span style={{ fontSize: '13px', fontWeight: 700, fontFamily: 'JetBrains Mono, monospace', color: r.is_lowest ? '#34d399' : '#94a3b8' }}>
+                  <span style={{ fontSize: '13px', fontWeight: 800, fontFamily: 'JetBrains Mono, monospace', color: r.is_lowest ? '#047857' : '#0f172a' }}>
                     ₹{r.price_inr.toLocaleString('en-IN')}
                   </span>
                   {r.url && (
@@ -1026,7 +1084,7 @@ function LowestPriceDealCard({ deal, onBuyNow, onOpenPriceWatch }) {
                       href={r.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      style={{ color: '#60a5fa', fontSize: '11px', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '2px' }}
+                      style={{ color: '#1d4ed8', fontSize: '11px', fontWeight: 700, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '2px' }}
                       onClick={e => e.stopPropagation()}
                     >
                       Visit <ExternalLink size={10} />
@@ -1053,16 +1111,16 @@ function LowestPriceDealCard({ deal, onBuyNow, onOpenPriceWatch }) {
 
       {/* Action Bar */}
       <div style={{
-        borderTop: '1px solid rgba(255,255,255,0.08)', padding: '12px 14px',
-        background: 'rgba(8,12,20,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        borderTop: '1px solid #cbd5e1', padding: '12px 14px',
+        backgroundColor: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         flexWrap: 'wrap', gap: '8px'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <button
             onClick={() => setShowHistoryChart(!showHistoryChart)}
             style={{
-              padding: '7px 11px', borderRadius: '8px', border: '1px solid rgba(59,130,246,0.4)',
-              background: 'rgba(59,130,246,0.15)', color: '#60a5fa', fontSize: '11px', fontWeight: 700,
+              padding: '7px 11px', borderRadius: '6px', border: '1px solid #bfdbfe',
+              backgroundColor: '#eff6ff', color: '#1e40af', fontSize: '11px', fontWeight: 700,
               cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', transition: 'all 0.15s'
             }}
           >
@@ -1071,8 +1129,8 @@ function LowestPriceDealCard({ deal, onBuyNow, onOpenPriceWatch }) {
           <button
             onClick={() => onOpenPriceWatch && onOpenPriceWatch(deal)}
             style={{
-              padding: '7px 11px', borderRadius: '8px', border: '1px solid rgba(16,185,129,0.4)',
-              background: 'rgba(16,185,129,0.15)', color: '#34d399', fontSize: '11px', fontWeight: 700,
+              padding: '7px 11px', borderRadius: '6px', border: '1px solid #a7f3d0',
+              backgroundColor: '#ecfdf5', color: '#047857', fontSize: '11px', fontWeight: 700,
               cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', transition: 'all 0.15s'
             }}
           >
@@ -1089,14 +1147,12 @@ function LowestPriceDealCard({ deal, onBuyNow, onOpenPriceWatch }) {
               `Direct Buy lowest price deal: ${deal.brand_model} at ${deal.lowest_store}`
             )}
             style={{
-              padding: '9px 16px', borderRadius: '10px', border: 'none',
-              background: 'linear-gradient(135deg, #10b981 0%, #0d9488 100%)',
+              padding: '9px 16px', borderRadius: '6px', border: 'none',
+              backgroundColor: '#059669',
               color: 'white', fontSize: '13px', fontWeight: 800, cursor: 'pointer',
               display: 'flex', alignItems: 'center', gap: '6px',
-              boxShadow: '0 4px 14px rgba(16,185,129,0.4)', transition: 'all 0.15s'
+              boxShadow: '0 2px 6px rgba(5,150,105,0.25)', transition: 'all 0.15s'
             }}
-            onMouseOver={e => e.currentTarget.style.boxShadow = '0 6px 20px rgba(16,185,129,0.6)'}
-            onMouseOut={e => e.currentTarget.style.boxShadow = '0 4px 14px rgba(16,185,129,0.4)'}
           >
             <CreditCard size={14} />
             Buy with Razorpay (₹{deal.lowest_price_inr.toLocaleString('en-IN')})
@@ -1105,8 +1161,8 @@ function LowestPriceDealCard({ deal, onBuyNow, onOpenPriceWatch }) {
           <button
             disabled
             style={{
-              padding: '8px 14px', borderRadius: '10px', border: '1px solid rgba(239,68,68,0.4)',
-              background: 'rgba(239,68,68,0.15)', color: '#f87171', fontSize: '12px', fontWeight: 700,
+              padding: '8px 14px', borderRadius: '6px', border: '1px solid #fecdd3',
+              backgroundColor: '#fef2f2', color: '#b91c1c', fontSize: '12px', fontWeight: 700,
               cursor: 'not-allowed', display: 'flex', alignItems: 'center', gap: '6px'
             }}
           >
@@ -1131,9 +1187,9 @@ function ProductCard({ product, onBuyNow, onOpenPriceWatch }) {
 
   return (
     <div style={{
-      background: 'rgba(15,23,42,0.9)', border: '1px solid rgba(59,130,246,0.25)',
-      borderRadius: '16px', overflow: 'hidden',
-      boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+      backgroundColor: '#ffffff', border: '1px solid #cbd5e1',
+      borderRadius: '12px', overflow: 'hidden',
+      boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
       animation: 'fadeSlideIn 0.3s ease-out'
     }}>
       {/* Product Image + Info */}
@@ -1142,8 +1198,8 @@ function ProductCard({ product, onBuyNow, onOpenPriceWatch }) {
           src={product.image_url}
           alt={product.name}
           style={{
-            width: '76px', height: '76px', borderRadius: '10px', objectFit: 'cover',
-            flexShrink: 0, border: '1px solid rgba(255,255,255,0.1)', background: '#0f172a'
+            width: '76px', height: '76px', borderRadius: '8px', objectFit: 'cover',
+            flexShrink: 0, border: '1px solid #cbd5e1', backgroundColor: '#f8fafc'
           }}
           onError={e => { e.target.src = 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=300&q=80'; }}
         />
@@ -1151,35 +1207,35 @@ function ProductCard({ product, onBuyNow, onOpenPriceWatch }) {
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
             {product.is_web_result && (
               <span style={{
-                fontSize: '10px', fontWeight: 700,
-                background: 'linear-gradient(135deg, rgba(16,185,129,0.2), rgba(6,182,212,0.2))',
-                border: '1px solid rgba(16,185,129,0.5)', color: '#34d399',
+                fontSize: '10px', fontWeight: 800,
+                backgroundColor: '#ecfdf5',
+                border: '1px solid #a7f3d0', color: '#047857',
                 padding: '2px 8px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '4px'
               }}>
-                <Globe size={10} color="#34d399" />
+                <Globe size={10} color="#047857" />
                 Live Web (Tavily)
               </span>
             )}
             <span style={{
               fontSize: '10px', fontFamily: 'JetBrains Mono, monospace',
-              background: 'rgba(59,130,246,0.15)', color: '#60a5fa',
-              border: '1px solid rgba(59,130,246,0.3)', padding: '2px 8px', borderRadius: '20px'
+              backgroundColor: '#eff6ff', color: '#1e40af',
+              border: '1px solid #bfdbfe', padding: '2px 8px', borderRadius: '20px', fontWeight: 700
             }}>
               {product.category}
             </span>
-            <span style={{ fontSize: '11px', color: '#fbbf24', display: 'flex', alignItems: 'center', gap: '2px' }}>
-              <Star size={10} fill="#fbbf24" />
+            <span style={{ fontSize: '11px', color: '#b45309', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '2px' }}>
+              <Star size={10} fill="#b45309" />
               {product.rating}
             </span>
             <span style={{
               fontSize: '10px',
-              color: product.target_tier === 'professional' ? '#c084fc' : '#34d399',
-              fontWeight: 600
+              color: product.target_tier === 'professional' ? '#6d28d9' : '#047857',
+              fontWeight: 700
             }}>
               {product.target_tier === 'professional' ? 'Pro' : 'Casual'}
             </span>
           </div>
-          <h4 style={{ fontSize: '14px', fontWeight: 700, color: '#f1f5f9', margin: '4px 0 2px', lineHeight: 1.3 }}>
+          <h4 style={{ fontSize: '14px', fontWeight: 800, color: '#0f172a', margin: '4px 0 2px', lineHeight: 1.3 }}>
             {product.name}
           </h4>
           {product.source_domain && product.source_url && (
@@ -1189,7 +1245,7 @@ function ProductCard({ product, onBuyNow, onOpenPriceWatch }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
-                  fontSize: '11px', color: '#38bdf8', textDecoration: 'none',
+                  fontSize: '11px', color: '#1d4ed8', fontWeight: 700, textDecoration: 'none',
                   display: 'inline-flex', alignItems: 'center', gap: '4px'
                 }}
                 onClick={e => e.stopPropagation()}
@@ -1198,7 +1254,7 @@ function ProductCard({ product, onBuyNow, onOpenPriceWatch }) {
               </a>
             </div>
           )}
-          <p style={{ fontSize: '12px', color: '#64748b', lineHeight: 1.5,
+          <p style={{ fontSize: '12px', color: '#334155', lineHeight: 1.5, fontWeight: 500,
             display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
             {product.description}
           </p>
@@ -1211,8 +1267,8 @@ function ProductCard({ product, onBuyNow, onOpenPriceWatch }) {
           {product.usage_tags.slice(0, 4).map((tag, i) => (
             <span key={i} style={{
               fontSize: '10px', padding: '2px 8px', borderRadius: '20px',
-              background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)',
-              color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '4px'
+              backgroundColor: '#f1f5f9', border: '1px solid #cbd5e1',
+              color: '#334155', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px'
             }}>
               <Tag size={8} /> {tag}
             </span>
@@ -1234,16 +1290,16 @@ function ProductCard({ product, onBuyNow, onOpenPriceWatch }) {
 
       {/* Pricing Actions */}
       <div style={{
-        borderTop: '1px solid rgba(255,255,255,0.07)', padding: '12px 14px',
-        background: 'rgba(8,12,20,0.5)',
+        borderTop: '1px solid #cbd5e1', padding: '12px 14px',
+        backgroundColor: '#f8fafc',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px', flexWrap: 'wrap'
       }}>
         <div>
-          <div style={{ fontSize: '18px', fontWeight: 800, color: '#f8fafc', fontFamily: 'JetBrains Mono, monospace' }}>
+          <div style={{ fontSize: '18px', fontWeight: 800, color: '#0f172a', fontFamily: 'JetBrains Mono, monospace' }}>
             ₹{standalonePrice.toLocaleString('en-IN')}
           </div>
           {hasBundlePricing && (
-            <div style={{ fontSize: '11px', color: '#34d399' }}>
+            <div style={{ fontSize: '11px', color: '#047857', fontWeight: 700 }}>
               Bundle from ₹{bundlePrice.toLocaleString('en-IN')} (Save ₹{product.bundle_preview.savings?.toLocaleString('en-IN')})
             </div>
           )}
@@ -1252,8 +1308,8 @@ function ProductCard({ product, onBuyNow, onOpenPriceWatch }) {
           <button
             onClick={() => setShowHistoryChart(!showHistoryChart)}
             style={{
-              padding: '6px 10px', borderRadius: '8px', border: '1px solid rgba(59,130,246,0.4)',
-              background: 'rgba(59,130,246,0.15)', color: '#60a5fa', fontSize: '11px', fontWeight: 700,
+              padding: '6px 10px', borderRadius: '6px', border: '1px solid #bfdbfe',
+              backgroundColor: '#eff6ff', color: '#1e40af', fontSize: '11px', fontWeight: 700,
               cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '3px'
             }}
           >
@@ -1262,8 +1318,8 @@ function ProductCard({ product, onBuyNow, onOpenPriceWatch }) {
           <button
             onClick={() => onOpenPriceWatch && onOpenPriceWatch(product)}
             style={{
-              padding: '6px 10px', borderRadius: '8px', border: '1px solid rgba(16,185,129,0.4)',
-              background: 'rgba(16,185,129,0.15)', color: '#34d399', fontSize: '11px', fontWeight: 700,
+              padding: '6px 10px', borderRadius: '6px', border: '1px solid #a7f3d0',
+              backgroundColor: '#ecfdf5', color: '#047857', fontSize: '11px', fontWeight: 700,
               cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '3px'
             }}
           >
@@ -1273,9 +1329,9 @@ function ProductCard({ product, onBuyNow, onOpenPriceWatch }) {
             <button
               onClick={() => setShowBundle(prev => !prev)}
               style={{
-                padding: '6px 10px', borderRadius: '8px', border: '1px solid rgba(6,182,212,0.4)',
-                background: 'rgba(6,182,212,0.1)', color: '#22d3ee', fontSize: '11px',
-                fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '3px'
+                padding: '6px 10px', borderRadius: '6px', border: '1px solid #bfdbfe',
+                backgroundColor: '#eff6ff', color: '#1d4ed8', fontSize: '11px',
+                fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '3px'
               }}
             >
               <Package size={12} />
@@ -1287,12 +1343,12 @@ function ProductCard({ product, onBuyNow, onOpenPriceWatch }) {
               disabled
               title="Exceeds ₹10,000 deterministic safety ceiling"
               style={{
-                padding: '7px 10px', borderRadius: '8px', border: '1px solid rgba(239,68,68,0.3)',
-                background: 'rgba(239,68,68,0.15)', color: '#f87171', fontSize: '11px', fontWeight: 600,
+                padding: '7px 10px', borderRadius: '6px', border: '1px solid #fecdd3',
+                backgroundColor: '#fef2f2', color: '#b91c1c', fontSize: '11px', fontWeight: 700,
                 cursor: 'not-allowed', display: 'flex', alignItems: 'center', gap: '4px'
               }}
             >
-              <AlertCircle size={12} color="#f87171" />
+              <AlertCircle size={12} color="#b91c1c" />
               Exceeds ₹10k
             </button>
           ) : (
@@ -1304,11 +1360,9 @@ function ProductCard({ product, onBuyNow, onOpenPriceWatch }) {
                 `AI recommended ${product.name} — ${product.is_web_result ? 'Live Web Verified' : 'Catalog'} purchase`
               )}
               style={{
-                padding: '7px 12px', borderRadius: '8px', border: 'none',
-                background: product.is_web_result 
-                  ? 'linear-gradient(135deg, #059669, #0d9488)' 
-                  : 'linear-gradient(135deg, #2563eb, #1d4ed8)',
-                color: 'white', fontSize: '12px', fontWeight: 700, cursor: 'pointer',
+                padding: '7px 12px', borderRadius: '6px', border: 'none',
+                backgroundColor: product.is_web_result ? '#059669' : '#1d4ed8',
+                color: 'white', fontSize: '12px', fontWeight: 800, cursor: 'pointer',
                 display: 'flex', alignItems: 'center', gap: '4px'
               }}
             >
@@ -1323,35 +1377,34 @@ function ProductCard({ product, onBuyNow, onOpenPriceWatch }) {
       {showBundle && hasBundlePricing && (
         <div style={{
           margin: '0 14px 14px',
-          background: 'rgba(6,182,212,0.07)', border: '1px solid rgba(6,182,212,0.25)',
-          borderRadius: '12px', padding: '12px',
+          backgroundColor: '#eff6ff', border: '1px solid #bfdbfe',
+          borderRadius: '8px', padding: '12px',
           animation: 'fadeSlideIn 0.2s ease-out'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-            <span style={{ fontSize: '12px', fontWeight: 700, color: '#22d3ee', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ fontSize: '12px', fontWeight: 800, color: '#1e40af', display: 'flex', alignItems: 'center', gap: '6px' }}>
               <Package size={13} />
               {product.bundle_preview.bundle_name}
             </span>
             <span style={{
-              background: 'rgba(16,185,129,0.2)', color: '#34d399',
-              border: '1px solid rgba(16,185,129,0.3)',
+              backgroundColor: '#059669', color: '#ffffff',
               padding: '2px 8px', borderRadius: '12px', fontSize: '10px', fontWeight: 800
             }}>
               {product.bundle_preview.discount_pct}% OFF
             </span>
           </div>
-          <p style={{ fontSize: '11px', color: '#94a3b8', margin: '0 0 8px', lineHeight: 1.4 }}>
+          <p style={{ fontSize: '11px', color: '#334155', margin: '0 0 8px', lineHeight: 1.4, fontWeight: 500 }}>
             {product.bundle_preview.pitch}
           </p>
-          <div style={{ fontSize: '11px', color: '#64748b', marginBottom: '10px' }}>
-            Includes: <span style={{ color: '#cbd5e1' }}>{product.name}</span> + {product.bundle_preview.addon_names.join(', ')}
+          <div style={{ fontSize: '11px', color: '#475569', marginBottom: '10px', fontWeight: 500 }}>
+            Includes: <span style={{ color: '#0f172a', fontWeight: 700 }}>{product.name}</span> + {product.bundle_preview.addon_names.join(', ')}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div>
               <span style={{ fontSize: '11px', color: '#64748b', textDecoration: 'line-through', marginRight: '6px' }}>
                 ₹{product.bundle_preview.standalone_total?.toLocaleString('en-IN')}
               </span>
-              <span style={{ fontSize: '16px', fontWeight: 800, color: '#34d399', fontFamily: 'JetBrains Mono, monospace' }}>
+              <span style={{ fontSize: '16px', fontWeight: 800, color: '#047857', fontFamily: 'JetBrains Mono, monospace' }}>
                 ₹{product.bundle_preview.bundle_price?.toLocaleString('en-IN')}
               </span>
             </div>
@@ -1366,9 +1419,9 @@ function ProductCard({ product, onBuyNow, onOpenPriceWatch }) {
                 );
               }}
               style={{
-                padding: '7px 14px', borderRadius: '9px', border: 'none',
-                background: 'linear-gradient(135deg, #0891b2, #0e7490)',
-                color: 'white', fontSize: '12px', fontWeight: 700,
+                padding: '7px 14px', borderRadius: '6px', border: 'none',
+                backgroundColor: '#1d4ed8',
+                color: 'white', fontSize: '12px', fontWeight: 800,
                 cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px'
               }}
             >
@@ -1392,18 +1445,18 @@ function BundleCard({ bundle, onBuyBundle }) {
 
   return (
     <div style={{
-      background: 'linear-gradient(135deg, rgba(6,182,212,0.08) 0%, rgba(15,23,42,0.9) 100%)',
-      border: '1px solid rgba(6,182,212,0.35)', borderRadius: '16px', padding: '14px',
+      backgroundColor: '#ffffff',
+      border: '1px solid #cbd5e1', borderRadius: '12px', padding: '14px',
+      boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
       animation: 'fadeSlideIn 0.3s ease-out'
     }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '7px', fontSize: '13px', fontWeight: 700, color: '#22d3ee' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '7px', fontSize: '13px', fontWeight: 800, color: '#1e40af' }}>
           <Package size={15} />
           {bundle.bundle_name || 'Smart Bundle Deal'}
         </div>
         <span style={{
-          background: 'rgba(16,185,129,0.2)', color: '#34d399',
-          border: '1px solid rgba(16,185,129,0.35)',
+          backgroundColor: '#059669', color: '#ffffff',
           padding: '3px 10px', borderRadius: '20px', fontSize: '11px', fontWeight: 800
         }}>
           {bundle.discount_pct}% OFF
@@ -1416,43 +1469,41 @@ function BundleCard({ bundle, onBuyBundle }) {
           .map((item, i) => (
             <div key={i} style={{
               display: 'flex', justifyContent: 'space-between', fontSize: '12px',
-              padding: '5px 0', borderBottom: '1px solid rgba(255,255,255,0.05)',
-              color: i === 0 ? '#e2e8f0' : '#94a3b8'
+              padding: '5px 0', borderBottom: '1px solid #e2e8f0',
+              color: i === 0 ? '#0f172a' : '#334155', fontWeight: i === 0 ? 700 : 500
             }}>
               <span>{i === 0 ? '⭐' : '+'} {item.name}</span>
-              {item.price_inr && <span style={{ fontFamily: 'JetBrains Mono, monospace' }}>₹{item.price_inr?.toLocaleString('en-IN')}</span>}
+              {item.price_inr && <span style={{ fontFamily: 'JetBrains Mono, monospace', fontWeight: 700 }}>₹{item.price_inr?.toLocaleString('en-IN')}</span>}
             </div>
           ))
         }
       </div>
 
-      <p style={{ fontSize: '11px', color: '#475569', fontStyle: 'italic', marginBottom: '12px' }}>
+      <p style={{ fontSize: '11px', color: '#475569', fontStyle: 'italic', marginBottom: '12px', fontWeight: 500 }}>
         "{bundle.bundle_pitch}"
       </p>
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>
-          <span style={{ fontSize: '12px', color: '#475569', textDecoration: 'line-through', marginRight: '8px' }}>
+          <span style={{ fontSize: '12px', color: '#64748b', textDecoration: 'line-through', marginRight: '8px' }}>
             ₹{bundle.standalone_total_inr?.toLocaleString('en-IN')}
           </span>
-          <span style={{ fontSize: '20px', fontWeight: 800, color: '#34d399', fontFamily: 'JetBrains Mono, monospace' }}>
+          <span style={{ fontSize: '20px', fontWeight: 800, color: '#047857', fontFamily: 'JetBrains Mono, monospace' }}>
             ₹{bundle.bundle_price_inr?.toLocaleString('en-IN')}
           </span>
-          <span style={{ fontSize: '11px', color: '#34d399', marginLeft: '6px' }}>
+          <span style={{ fontSize: '11px', color: '#047857', marginLeft: '6px', fontWeight: 700 }}>
             (Save ₹{bundle.savings_inr?.toLocaleString('en-IN')})
           </span>
         </div>
         <button
           onClick={() => onBuyBundle(allItems, bundle.bundle_price_inr)}
           style={{
-            padding: '9px 18px', borderRadius: '10px', border: 'none',
-            background: 'linear-gradient(135deg, #0891b2, #0e7490)',
-            color: 'white', fontSize: '13px', fontWeight: 700,
+            padding: '9px 18px', borderRadius: '6px', border: 'none',
+            backgroundColor: '#1d4ed8',
+            color: 'white', fontSize: '13px', fontWeight: 800,
             cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px',
-            boxShadow: '0 4px 14px rgba(8,145,178,0.4)', transition: 'all 0.15s'
+            boxShadow: '0 2px 6px rgba(29,78,216,0.25)', transition: 'all 0.15s'
           }}
-          onMouseOver={e => e.currentTarget.style.boxShadow = '0 6px 20px rgba(8,145,178,0.6)'}
-          onMouseOut={e => e.currentTarget.style.boxShadow = '0 4px 14px rgba(8,145,178,0.4)'}
         >
           <ShoppingCart size={14} />
           Buy Bundle
@@ -1463,12 +1514,12 @@ function BundleCard({ bundle, onBuyBundle }) {
 }
 
 // ---- Text Formatter ----
-function formatMessageText(text) {
+function formatMessageText(text, isUser = false) {
   if (!text) return null;
   const parts = text.split(/(\*\*[^*]+\*\*)/g);
   return parts.map((part, i) => {
     if (part.startsWith('**') && part.endsWith('**')) {
-      return <strong key={i} style={{ color: '#f1f5f9', fontWeight: 700 }}>{part.slice(2, -2)}</strong>;
+      return <strong key={i} style={{ color: isUser ? '#ffffff' : '#0f172a', fontWeight: 800 }}>{part.slice(2, -2)}</strong>;
     }
     return part;
   });

@@ -111,32 +111,32 @@ export default function DirectCheckout({ orderDetails, sessionId, onPaymentSucce
 
   return (
     <div style={{
-      background: 'rgba(37,99,235,0.07)',
-      border: '1px solid rgba(37,99,235,0.35)',
-      borderRadius: '16px', padding: '16px',
-      backdropFilter: 'blur(20px)'
+      backgroundColor: '#ffffff',
+      border: '1px solid #bfdbfe',
+      borderRadius: '12px', padding: '16px',
+      boxShadow: '0 4px 16px rgba(0,0,0,0.06)'
     }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <ShieldCheck size={16} color="#60a5fa" />
-          <span style={{ fontSize: '12px', fontFamily: 'JetBrains Mono, monospace', color: '#93c5fd', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+          <ShieldCheck size={16} color="#1d4ed8" />
+          <span style={{ fontSize: '12px', fontFamily: 'JetBrains Mono, monospace', color: '#1e40af', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
             Razorpay Secure Checkout
           </span>
         </div>
         <div style={{ textAlign: 'right' }}>
-          <div style={{ fontSize: '10px', color: '#64748b' }}>Total</div>
-          <div style={{ fontSize: '20px', fontWeight: 800, color: 'white', fontFamily: 'JetBrains Mono, monospace' }}>
+          <div style={{ fontSize: '10px', color: '#475569', fontWeight: 600 }}>Total</div>
+          <div style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', fontFamily: 'JetBrains Mono, monospace' }}>
             ₹{orderDetails.totalAmount?.toLocaleString('en-IN')}
           </div>
         </div>
       </div>
 
       {/* Items Summary */}
-      <div style={{ marginBottom: '14px', padding: '10px', background: 'rgba(0,0,0,0.25)', borderRadius: '10px', fontSize: '12px', color: '#94a3b8' }}>
+      <div style={{ marginBottom: '14px', padding: '10px', backgroundColor: '#f8fafc', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '12px', color: '#334155', fontWeight: 600 }}>
         {orderDetails.items?.length} item(s) · {orderDetails.isBundle ? '🎁 Bundle discount applied' : '📦 Standalone pricing'}
         {orderDetails.reasoning && (
-          <div style={{ marginTop: '4px', color: '#475569', fontSize: '11px', fontStyle: 'italic' }}>
+          <div style={{ marginTop: '4px', color: '#475569', fontSize: '11px', fontStyle: 'italic', fontWeight: 500 }}>
             "{orderDetails.reasoning?.slice(0, 80)}..."
           </div>
         )}
@@ -145,16 +145,16 @@ export default function DirectCheckout({ orderDetails, sessionId, onPaymentSucce
       {/* Success State */}
       {success ? (
         <div style={{
-          padding: '14px', background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.35)',
-          borderRadius: '12px', display: 'flex', gap: '10px', alignItems: 'flex-start'
+          padding: '14px', backgroundColor: '#ecfdf5', border: '1px solid #a7f3d0',
+          borderRadius: '8px', display: 'flex', gap: '10px', alignItems: 'flex-start'
         }}>
-          <CheckCircle2 size={18} color="#34d399" style={{ flexShrink: 0, marginTop: '1px' }} />
+          <CheckCircle2 size={18} color="#059669" style={{ flexShrink: 0, marginTop: '1px' }} />
           <div>
-            <div style={{ fontWeight: 700, color: 'white', fontSize: '13px' }}>Payment Successful! 🎉</div>
-            <div style={{ fontSize: '11px', color: '#34d399', fontFamily: 'JetBrains Mono, monospace', marginTop: '4px' }}>
+            <div style={{ fontWeight: 800, color: '#047857', fontSize: '13px' }}>Payment Successful! 🎉</div>
+            <div style={{ fontSize: '11px', color: '#047857', fontFamily: 'JetBrains Mono, monospace', marginTop: '4px', fontWeight: 700 }}>
               {success.orderId} · {success.paymentId}
             </div>
-            <div style={{ fontSize: '11px', color: '#64748b', marginTop: '4px' }}>
+            <div style={{ fontSize: '11px', color: '#334155', marginTop: '4px', fontWeight: 600 }}>
               Audit log updated · Policy gate: PASSED
             </div>
           </div>
@@ -163,18 +163,18 @@ export default function DirectCheckout({ orderDetails, sessionId, onPaymentSucce
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           {error && (
             <div style={{
-              padding: '10px 14px', background: 'rgba(244,63,94,0.1)', border: '1px solid rgba(244,63,94,0.35)',
-              borderRadius: '10px', display: 'flex', gap: '8px', alignItems: 'flex-start', fontSize: '12px', color: '#fb7185'
+              padding: '10px 14px', backgroundColor: '#fef2f2', border: '1px solid #fecdd3',
+              borderRadius: '8px', display: 'flex', gap: '8px', alignItems: 'flex-start', fontSize: '12px', color: '#b91c1c'
             }}>
               <AlertCircle size={15} style={{ flexShrink: 0, marginTop: '1px' }} />
               <div>
-                <span style={{ fontWeight: 600 }}>Policy Gate: </span>{error}
+                <span style={{ fontWeight: 800 }}>Policy Gate: </span>{error}
               </div>
             </div>
           )}
 
           {/* Safety Badges */}
-          <div style={{ display: 'flex', gap: '8px', fontSize: '11px', color: '#475569' }}>
+          <div style={{ display: 'flex', gap: '8px', fontSize: '11px', color: '#334155', fontWeight: 600 }}>
             <span>🛡️ ₹10,000 Hard Cap</span>
             <span>·</span>
             <span>⚡ Max 2/hr per session</span>
@@ -186,12 +186,12 @@ export default function DirectCheckout({ orderDetails, sessionId, onPaymentSucce
             onClick={handlePay}
             disabled={loading}
             style={{
-              width: '100%', padding: '12px', borderRadius: '12px', border: 'none',
-              background: loading ? 'rgba(37,99,235,0.4)' : 'linear-gradient(135deg, #2563eb, #1d4ed8)',
-              color: 'white', fontSize: '14px', fontWeight: 700,
+              width: '100%', padding: '12px', borderRadius: '8px', border: 'none',
+              backgroundColor: loading ? '#cbd5e1' : '#1d4ed8',
+              color: 'white', fontSize: '14px', fontWeight: 800,
               cursor: loading ? 'not-allowed' : 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-              boxShadow: loading ? 'none' : '0 4px 18px rgba(37,99,235,0.45)',
+              boxShadow: loading ? 'none' : '0 2px 8px rgba(29,78,216,0.3)',
               transition: 'all 0.15s'
             }}
           >
