@@ -1,0 +1,56 @@
+# ─── Environment & Secrets (NEVER commit real API keys) ───
+.env
+backend/.env
+*.env
+
+# ─── Python ───
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.venv/
+venv/
+env/
+pip-wheel-metadata/
+.pytest_cache/
+.mypy_cache/
+
+# ─── SQLite Database (generated at runtime) ───
+*.db
+*.sqlite
+*.sqlite3
+
+# ─── Node / Frontend ───
+node_modules/
+frontend/node_modules/
+dist/
+frontend/dist/
+.pnp
+.pnp.js
+
+# ─── Vite build cache ───
+frontend/.vite/
+.vite/
+
+# ─── IDE / OS ───
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ─── Logs ───
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ─── Task 1 Information (internal docs, not needed for submission) ───
+Task 1 Information/
