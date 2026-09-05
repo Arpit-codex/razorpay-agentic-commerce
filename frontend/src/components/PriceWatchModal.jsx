@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Bell, X, ShoppingCart, Ban, Clock } from 'lucide-react';
 
 export default function PriceWatchModal({ product, sessionId, onClose, onWatchCreated }) {
   const currentPrice = product.price_inr || product.lowest_price_inr || 9999;
@@ -19,7 +20,7 @@ export default function PriceWatchModal({ product, sessionId, onClose, onWatchCr
       const payload = {
         session_id: sessionId || 'session_demo_default',
         product_id: product.id || product.product_id || 'prod_watched',
-        product_name: product.name || product.product_name || 'Market Gear',
+        product_name: product.name || product.product_name || product.brand_model || 'Market Gear',
         brand_model: product.brand_model || product.name || 'Core Peripheral',
         target_price_inr: parseFloat(targetPrice),
         deadline_hours: parseInt(deadlineHours),
@@ -45,73 +46,146 @@ export default function PriceWatchModal({ product, sessionId, onClose, onWatchCr
   };
 
   return (
-    <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
-      <div className="bg-white border border-slate-300 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-5 text-slate-900 animate-in fade-in zoom-in duration-200">
-        {/* Modal Header */}
-        <div className="flex justify-between items-start border-b border-slate-200 pb-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-300 flex items-center justify-center text-xl">
-              🔔
+    <div style={{
+      position: 'fixed',
+      top: 0, left: 0, right: 0, bottom: 0,
+      backgroundColor: 'rgba(15, 23, 42, 0.65)',
+      backdropFilter: 'blur(4px)',
+      zIndex: 9999,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '16px',
+      boxSizing: 'border-box'
+    }}>
+      <div style={{
+        backgroundColor: '#ffffff',
+        border: '1px solid #cbd5e1',
+        borderRadius: '16px',
+        maxWidth: '480px',
+        width: '100%',
+        maxHeight: '90vh',
+        overflowY: 'auto',
+        padding: '20px',
+        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+        color: '#0f172a',
+        boxSizing: 'border-box',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '14px',
+        fontFamily: 'Plus Jakarta Sans, system-ui, sans-serif'
+      }}>
+        {/* Header */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #e2e8f0', paddingBottom: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{
+              width: '36px', height: '36px', borderRadius: '10px',
+              backgroundColor: '#ecfdf5', border: '1px solid #a7f3d0',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              color: '#047857'
+            }}>
+              <Bell size={18} />
             </div>
             <div>
-              <h3 className="font-bold text-base text-slate-900">Set AI Price Watch</h3>
-              <p className="text-xs text-slate-600 font-medium">Autonomous Hold & Auto-Buy Agent</p>
+              <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#0f172a', margin: 0 }}>Set AI Price Watch</h3>
+              <p style={{ fontSize: '11px', color: '#475569', margin: '2px 0 0', fontWeight: 500 }}>Autonomous Hold & Auto-Buy Agent</p>
             </div>
           </div>
-          <button 
+          <button
+            type="button"
             onClick={onClose}
-            className="text-slate-500 hover:text-slate-900 bg-slate-100 w-7 h-7 rounded-full flex items-center justify-center text-xs transition font-bold"
+            style={{
+              backgroundColor: '#f1f5f9', border: '1px solid #cbd5e1', color: '#475569',
+              width: '28px', height: '28px', borderRadius: '50%', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700
+            }}
           >
-            ✕
+            <X size={14} />
           </button>
         </div>
 
-        {/* Product Preview Card */}
-        <div className="bg-slate-50 border border-slate-300 rounded-xl p-3.5 flex items-center gap-3">
+        {/* Product Card Preview */}
+        <div style={{
+          backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '10px',
+          padding: '10px 12px', display: 'flex', alignItems: 'center', gap: '12px'
+        }}>
           {product.image_url && (
-            <img 
-              src={product.image_url} 
-              alt={product.name} 
-              className="w-12 h-12 object-cover rounded-lg border border-slate-300 flex-shrink-0"
+            <img
+              src={product.image_url}
+              alt={product.name || product.brand_model}
+              style={{
+                width: '52px', height: '52px', minWidth: '52px', minHeight: '52px',
+                objectFit: 'contain', borderRadius: '8px', border: '1px solid #cbd5e1',
+                backgroundColor: '#ffffff', flexShrink: 0
+              }}
+              onError={e => { e.target.src = 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=300&q=80'; }}
             />
           )}
-          <div className="overflow-hidden">
-            <h4 className="font-bold text-xs text-slate-900 truncate">{product.name || product.brand_model}</h4>
-            <p className="text-[11px] text-slate-600 font-medium">
-              Current Market Price: <span className="font-bold text-emerald-700">₹{currentPrice.toLocaleString('en-IN')}</span>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <h4 style={{ fontSize: '13px', fontWeight: 800, color: '#0f172a', margin: '0 0 2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              {product.name || product.brand_model || 'Selected Item'}
+            </h4>
+            <p style={{ fontSize: '12px', color: '#475569', margin: 0, fontWeight: 500 }}>
+              Current Market Price: <strong style={{ color: '#047857', fontWeight: 800 }}>₹{currentPrice.toLocaleString('en-IN')}</strong>
             </p>
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Target Price Selection */}
-          <div className="space-y-2">
-            <div className="flex justify-between text-xs">
-              <label className="font-bold text-slate-800">My Target Price (INR):</label>
-              <span className="font-bold text-emerald-700">₹{parseFloat(targetPrice).toLocaleString('en-IN')}</span>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+          {/* Target Price Section */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
+              <label style={{ fontWeight: 700, color: '#0f172a' }}>My Target Price (INR):</label>
+              <span style={{ fontWeight: 800, color: '#047857', fontFamily: 'JetBrains Mono, monospace' }}>
+                ₹{parseFloat(targetPrice || 0).toLocaleString('en-IN')}
+              </span>
             </div>
-            <input 
+            <input
               type="number"
               min="100"
               max={currentPrice}
               value={targetPrice}
               onChange={(e) => setTargetPrice(e.target.value)}
-              className="w-full bg-white border border-slate-400 rounded-xl px-3 py-2 text-sm text-slate-900 font-bold focus:outline-none focus:border-emerald-600"
+              style={{
+                width: '100%', backgroundColor: '#ffffff', border: '1px solid #94a3b8',
+                borderRadius: '8px', padding: '8px 12px', fontSize: '14px', color: '#0f172a',
+                fontWeight: 700, outline: 'none', boxSizing: 'border-box'
+              }}
               required
             />
-            <div className="flex justify-between text-[10px] text-slate-600 font-medium">
-              <span>Current: ₹{currentPrice.toLocaleString('en-IN')}</span>
-              <span>15% drop: ₹{Math.round(currentPrice * 0.85).toLocaleString('en-IN')}</span>
-              <span>25% drop: ₹{Math.round(currentPrice * 0.75).toLocaleString('en-IN')}</span>
+            {/* Quick target presets */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '4px', marginTop: '2px' }}>
+              {[
+                { label: 'Current', price: currentPrice },
+                { label: '10% Drop', price: Math.round(currentPrice * 0.90) },
+                { label: '15% Drop', price: Math.round(currentPrice * 0.85) },
+                { label: '25% Drop', price: Math.round(currentPrice * 0.75) }
+              ].map((p, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => setTargetPrice(p.price)}
+                  style={{
+                    backgroundColor: String(targetPrice) === String(p.price) ? '#ecfdf5' : '#f1f5f9',
+                    border: String(targetPrice) === String(p.price) ? '1px solid #059669' : '1px solid #cbd5e1',
+                    color: String(targetPrice) === String(p.price) ? '#047857' : '#475569',
+                    borderRadius: '6px', padding: '3px 6px', fontSize: '10px', fontWeight: 700,
+                    cursor: 'pointer', flex: 1, textAlign: 'center'
+                  }}
+                >
+                  {p.label}: ₹{p.price.toLocaleString('en-IN')}
+                </button>
+              ))}
             </div>
           </div>
 
-          {/* Timeline / Deadline selector */}
-          <div className="space-y-2">
-            <label className="block text-xs font-bold text-slate-800">
+          {/* Monitor Timeline */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '12px', fontWeight: 700, color: '#0f172a', display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <Clock size={13} color="#0f172a" />
               Monitor Timeline (Deadline):
             </label>
-            <div className="grid grid-cols-4 gap-2">
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '6px' }}>
               {[
                 { label: '24 Hours', hrs: 24 },
                 { label: '48 Hours', hrs: 48 },
@@ -122,11 +196,13 @@ export default function PriceWatchModal({ product, sessionId, onClose, onWatchCr
                   key={opt.hrs}
                   type="button"
                   onClick={() => setDeadlineHours(opt.hrs)}
-                  className={`py-2 text-[11px] font-bold rounded-xl border transition ${
-                    deadlineHours === opt.hrs
-                      ? 'bg-emerald-50 border-emerald-600 text-emerald-800'
-                      : 'bg-slate-50 border-slate-300 text-slate-700 hover:bg-slate-100'
-                  }`}
+                  style={{
+                    padding: '7px 4px', fontSize: '11px', fontWeight: 700, borderRadius: '8px',
+                    backgroundColor: deadlineHours === opt.hrs ? '#ecfdf5' : '#f8fafc',
+                    border: deadlineHours === opt.hrs ? '1.5px solid #059669' : '1px solid #cbd5e1',
+                    color: deadlineHours === opt.hrs ? '#047857' : '#334155',
+                    cursor: 'pointer', textAlign: 'center', transition: 'all 0.15s'
+                  }}
                 >
                   {opt.label}
                 </button>
@@ -134,70 +210,86 @@ export default function PriceWatchModal({ product, sessionId, onClose, onWatchCr
             </div>
           </div>
 
-          {/* Fallback Action if deadline expires without price drop */}
-          <div className="space-y-2 border-t border-slate-200 pt-3">
-            <label className="block text-xs font-bold text-slate-800">
+          {/* Expiration action option */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', borderTop: '1px solid #e2e8f0', paddingTop: '10px' }}>
+            <label style={{ fontSize: '12px', fontWeight: 700, color: '#0f172a' }}>
               If target price is NOT reached within timeline:
             </label>
-            <div className="space-y-2">
-              <label 
-                className={`flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition ${
-                  actionOnExpire === 'BUY_ANYWAY' 
-                    ? 'bg-emerald-50 border-emerald-500 text-slate-900' 
-                    : 'bg-slate-50 border-slate-300 text-slate-700'
-                }`}
-              >
-                <input 
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label style={{
+                display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '10px',
+                borderRadius: '8px', cursor: 'pointer',
+                backgroundColor: actionOnExpire === 'BUY_ANYWAY' ? '#ecfdf5' : '#f8fafc',
+                border: actionOnExpire === 'BUY_ANYWAY' ? '1.5px solid #059669' : '1px solid #cbd5e1'
+              }}>
+                <input
                   type="radio"
                   name="action_on_expire"
                   value="BUY_ANYWAY"
                   checked={actionOnExpire === 'BUY_ANYWAY'}
                   onChange={() => setActionOnExpire('BUY_ANYWAY')}
-                  className="mt-0.5 accent-emerald-600"
+                  style={{ marginTop: '2px', accentColor: '#059669' }}
                 />
-                <div className="text-xs">
-                  <span className="font-bold text-slate-900">🛒 Buy at present price anyway</span>
-                  <p className="text-[11px] text-slate-600 font-medium">If urgent or high need, agent buys at best available price when deadline ends.</p>
+                <div style={{ fontSize: '12px' }}>
+                  <span style={{ fontWeight: 800, color: '#0f172a', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <ShoppingCart size={13} color="#047857" /> Buy at present price anyway
+                  </span>
+                  <p style={{ fontSize: '11px', color: '#475569', margin: '2px 0 0', fontWeight: 500, lineHeight: 1.3 }}>
+                    If urgent or high need, agent buys at best available price when deadline ends.
+                  </p>
                 </div>
               </label>
 
-              <label 
-                className={`flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition ${
-                  actionOnExpire === 'GIVE_UP' 
-                    ? 'bg-emerald-50 border-emerald-500 text-slate-900' 
-                    : 'bg-slate-50 border-slate-300 text-slate-700'
-                }`}
-              >
-                <input 
+              <label style={{
+                display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '10px',
+                borderRadius: '8px', cursor: 'pointer',
+                backgroundColor: actionOnExpire === 'GIVE_UP' ? '#ecfdf5' : '#f8fafc',
+                border: actionOnExpire === 'GIVE_UP' ? '1.5px solid #059669' : '1px solid #cbd5e1'
+              }}>
+                <input
                   type="radio"
                   name="action_on_expire"
                   value="GIVE_UP"
                   checked={actionOnExpire === 'GIVE_UP'}
                   onChange={() => setActionOnExpire('GIVE_UP')}
-                  className="mt-0.5 accent-emerald-600"
+                  style={{ marginTop: '2px', accentColor: '#059669' }}
                 />
-                <div className="text-xs">
-                  <span className="font-bold text-slate-900">🚫 Give up / Cancel hold</span>
-                  <p className="text-[11px] text-slate-600 font-medium">If non-urgent item, agent cancels watch without purchasing.</p>
+                <div style={{ fontSize: '12px' }}>
+                  <span style={{ fontWeight: 800, color: '#0f172a', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <Ban size={13} color="#dc2626" /> Give up / Cancel hold
+                  </span>
+                  <p style={{ fontSize: '11px', color: '#475569', margin: '2px 0 0', fontWeight: 500, lineHeight: 1.3 }}>
+                    If non-urgent item, agent cancels watch without purchasing.
+                  </p>
                 </div>
               </label>
             </div>
           </div>
 
           {error && (
-            <p className="text-xs text-rose-800 bg-rose-50 p-2 rounded-lg border border-rose-300 font-semibold">
+            <div style={{
+              fontSize: '12px', color: '#991b1b', backgroundColor: '#fef2f2',
+              border: '1px solid #fecdd3', borderRadius: '6px', padding: '8px 12px', fontWeight: 600
+            }}>
               {error}
-            </p>
+            </div>
           )}
 
           {/* Submit Button */}
-          <div className="pt-2">
+          <div style={{ paddingTop: '4px' }}>
             <button
               type="submit"
               disabled={submitting}
-              className="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3 px-4 rounded-xl shadow-md transition duration-200 flex items-center justify-center gap-2 text-sm disabled:opacity-50"
+              style={{
+                width: '100%', backgroundColor: '#059669', color: '#ffffff',
+                border: 'none', borderRadius: '10px', padding: '11px', fontSize: '13px',
+                fontWeight: 800, cursor: submitting ? 'not-allowed' : 'pointer',
+                boxShadow: '0 2px 6px rgba(5,150,105,0.25)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
+                opacity: submitting ? 0.6 : 1
+              }}
             >
-              {submitting ? 'Setting AI Price Watch...' : `🤖 Activate Autonomous Watch (Target: ₹${parseFloat(targetPrice).toLocaleString('en-IN')})`}
+              {submitting ? 'Setting AI Price Watch...' : `🤖 Activate Autonomous Watch (Target: ₹${parseFloat(targetPrice || 0).toLocaleString('en-IN')})`}
             </button>
           </div>
         </form>
@@ -205,3 +297,4 @@ export default function PriceWatchModal({ product, sessionId, onClose, onWatchCr
     </div>
   );
 }
+
